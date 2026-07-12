@@ -225,6 +225,51 @@
         width: 100%;
       }
     }
+    .adaptive-questions {
+  margin: 14px 0 18px;
+  padding: 14px;
+  background: #f4f9f7;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.adaptive-questions:empty {
+  display: none;
+}
+
+.adaptive-question {
+  margin-bottom: 13px;
+}
+
+.adaptive-question:last-child {
+  margin-bottom: 0;
+}
+
+.checkbox-group {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 7px;
+}
+
+.checkbox-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text);
+  font-weight: normal;
+}
+
+.checkbox-option input {
+  width: auto;
+  margin: 0;
+}
+
+@media (max-width: 650px) {
+  .checkbox-group {
+    grid-template-columns: 1fr;
+  }
+}
   </style>
 </head>
 
@@ -258,6 +303,36 @@
       </div>
 
       <label>
+        <label>
+  Select the type of concern
+  <select
+    id="complaintType1"
+    onchange="renderAdaptiveQuestions(1)"
+  >
+    <option value="">Select a complaint type</option>
+    <option value="rash">Rash / dermatitis</option>
+    <option value="lesion">New or changing lesion</option>
+    <option value="ak">Actinic keratosis / rough spots</option>
+    <option value="sk">Seborrheic keratosis / irritated growth</option>
+    <option value="acne">Acne</option>
+    <option value="atopic">Atopic dermatitis / eczema</option>
+    <option value="contact">Contact dermatitis</option>
+    <option value="psoriasis">Psoriasis</option>
+    <option value="rosacea">Rosacea</option>
+    <option value="skin-cancer">Known or suspected skin cancer</option>
+    <option value="nevus">Mole / nevus concern</option>
+    <option value="wart">Wart</option>
+    <option value="fungal">Fungal infection</option>
+    <option value="hair-loss">Hair loss</option>
+    <option value="pruritus">Itching without a clear rash</option>
+    <option value="other">Other</option>
+  </select>
+</label>
+
+<div
+  id="adaptiveQuestions1"
+  class="adaptive-questions"
+></div>
         What is your primary skin concern?
         <textarea
           id="complaint1"
@@ -311,6 +386,65 @@
       </div>
 
       <label>
+        <label>
+  Select the type of concern
+  <select
+    id="complaintType2"
+    onchange="renderAdaptiveQuestions(2)"
+  >
+    <option value="">Select a complaint type</option>
+    <option value="rash">Rash / dermatitis</option>
+    <option value="lesion">New or changing lesion</option>
+    <option value="ak">Actinic keratosis / rough spots</option>
+    <option value="sk">Seborrheic keratosis / irritated growth</option>
+    <option value="acne">Acne</option>
+    <option value="atopic">Atopic dermatitis / eczema</option>
+    <option value="contact">Contact dermatitis</option>
+    <option value="psoriasis">Psoriasis</option>
+    <option value="rosacea">Rosacea</option>
+    <option value="skin-cancer">Known or suspected skin cancer</option>
+    <option value="nevus">Mole / nevus concern</option>
+    <option value="wart">Wart</option>
+    <option value="fungal">Fungal infection</option>
+    <option value="hair-loss">Hair loss</option>
+    <option value="pruritus">Itching without a clear rash</option>
+    <option value="other">Other</option>
+  </select>
+</label>
+
+<div
+  id="adaptiveQuestions2"
+  class="adaptive-questions"
+></div><label>
+  Select the type of concern
+  <select
+    id="complaintType2"
+    onchange="renderAdaptiveQuestions(2)"
+  >
+    <option value="">Select a complaint type</option>
+    <option value="rash">Rash / dermatitis</option>
+    <option value="lesion">New or changing lesion</option>
+    <option value="ak">Actinic keratosis / rough spots</option>
+    <option value="sk">Seborrheic keratosis / irritated growth</option>
+    <option value="acne">Acne</option>
+    <option value="atopic">Atopic dermatitis / eczema</option>
+    <option value="contact">Contact dermatitis</option>
+    <option value="psoriasis">Psoriasis</option>
+    <option value="rosacea">Rosacea</option>
+    <option value="skin-cancer">Known or suspected skin cancer</option>
+    <option value="nevus">Mole / nevus concern</option>
+    <option value="wart">Wart</option>
+    <option value="fungal">Fungal infection</option>
+    <option value="hair-loss">Hair loss</option>
+    <option value="pruritus">Itching without a clear rash</option>
+    <option value="other">Other</option>
+  </select>
+</label>
+
+<div
+  id="adaptiveQuestions2"
+  class="adaptive-questions"
+></div>
         What is your next skin concern?
         <textarea
           id="complaint2"
@@ -364,6 +498,36 @@
       </div>
 
       <label>
+<label>
+  Select the type of concern
+  <select
+    id="complaintType3"
+    onchange="renderAdaptiveQuestions(3)"
+  >
+    <option value="">Select a complaint type</option>
+    <option value="rash">Rash / dermatitis</option>
+    <option value="lesion">New or changing lesion</option>
+    <option value="ak">Actinic keratosis / rough spots</option>
+    <option value="sk">Seborrheic keratosis / irritated growth</option>
+    <option value="acne">Acne</option>
+    <option value="atopic">Atopic dermatitis / eczema</option>
+    <option value="contact">Contact dermatitis</option>
+    <option value="psoriasis">Psoriasis</option>
+    <option value="rosacea">Rosacea</option>
+    <option value="skin-cancer">Known or suspected skin cancer</option>
+    <option value="nevus">Mole / nevus concern</option>
+    <option value="wart">Wart</option>
+    <option value="fungal">Fungal infection</option>
+    <option value="hair-loss">Hair loss</option>
+    <option value="pruritus">Itching without a clear rash</option>
+    <option value="other">Other</option>
+  </select>
+</label>
+
+<div
+  id="adaptiveQuestions3"
+  class="adaptive-questions"
+></div>
         What is your third skin concern?
         <textarea
           id="complaint3"
@@ -434,6 +598,282 @@
   </main>
 
   <script>
+    const complaintQuestionBank = {
+  rash: [
+    {
+      id: "rashSpread",
+      label: "Is the rash spreading?",
+      type: "select",
+      options: ["No", "Yes", "Unsure"]
+    },
+    {
+      id: "rashSymptoms",
+      label: "Which symptoms are present?",
+      type: "checkbox",
+      options: [
+        "Itching",
+        "Pain",
+        "Burning",
+        "Scaling",
+        "Blistering",
+        "Bleeding"
+      ]
+    },
+    {
+      id: "rashExposure",
+      label: "Any new medications, products, illness, travel, or exposures?",
+      type: "text"
+    }
+  ],
+
+  lesion: [
+    {
+      id: "lesionChange",
+      label: "What has changed?",
+      type: "checkbox",
+      options: [
+        "Size",
+        "Shape",
+        "Color",
+        "Bleeding",
+        "Pain",
+        "Itching"
+      ]
+    },
+    {
+      id: "lesionHistory",
+      label: "Personal history of skin cancer?",
+      type: "select",
+      options: ["No", "Yes", "Unsure"]
+    }
+  ],
+
+  ak: [
+    {
+      id: "akCount",
+      label: "Approximate number of rough spots",
+      type: "number"
+    },
+    {
+      id: "akSymptoms",
+      label: "Are the spots symptomatic?",
+      type: "checkbox",
+      options: ["Tender", "Itching", "Bleeding", "None"]
+    },
+    {
+      id: "akTreatment",
+      label: "Prior cryotherapy or field treatment?",
+      type: "text"
+    }
+  ],
+
+  acne: [
+    {
+      id: "acneAreas",
+      label: "Areas affected",
+      type: "checkbox",
+      options: ["Face", "Chest", "Back", "Shoulders", "Other"]
+    },
+    {
+      id: "acneSeverity",
+      label: "Current severity",
+      type: "select",
+      options: ["Mild", "Moderate", "Severe", "Unsure"]
+    },
+    {
+      id: "acneStatus",
+      label: "Compared with previously",
+      type: "select",
+      options: ["Better", "Same", "Worse", "New problem"]
+    },
+    {
+      id: "pregnancyStatus",
+      label: "Pregnant, trying to conceive, or breastfeeding?",
+      type: "select",
+      options: [
+        "No",
+        "Yes",
+        "Not applicable",
+        "Prefer not to answer"
+      ]
+    }
+  ],
+
+  psoriasis: [
+    {
+      id: "psoriasisStatus",
+      label: "Compared with the last visit",
+      type: "select",
+      options: ["Better", "Same", "Worse", "New problem"]
+    },
+    {
+      id: "psoriasisItch",
+      label: "Itch severity from 0 to 10",
+      type: "number"
+    },
+    {
+      id: "psoriasisJoint",
+      label: "Joint pain, swelling, or morning stiffness?",
+      type: "select",
+      options: ["No", "Yes"]
+    },
+    {
+      id: "psoriasisMissed",
+      label: "Any missed treatment doses?",
+      type: "select",
+      options: ["No", "Yes", "Not applicable"]
+    }
+  ],
+
+  "hair-loss": [
+    {
+      id: "hairPattern",
+      label: "Pattern of hair loss",
+      type: "select",
+      options: [
+        "Diffuse shedding",
+        "Patchy",
+        "Front or temples",
+        "Scarring concern",
+        "Unsure"
+      ]
+    },
+    {
+      id: "hairSymptoms",
+      label: "Scalp symptoms",
+      type: "checkbox",
+      options: ["Itching", "Burning", "Pain", "Scaling", "None"]
+    },
+    {
+      id: "hairTrigger",
+      label: "Recent illness, surgery, stress, weight loss, or medication change?",
+      type: "text"
+    }
+  ],
+
+  default: [
+    {
+      id: "generalChange",
+      label: "Has the condition changed recently?",
+      type: "select",
+      options: ["No", "Yes", "Unsure"]
+    },
+    {
+      id: "generalTreatment",
+      label: "What treatments have already been tried?",
+      type: "text"
+    }
+  ]
+};
+
+function renderAdaptiveQuestions(complaintNumber) {
+  const selector =
+    document.getElementById(
+      "complaintType" + complaintNumber
+    );
+
+  const container =
+    document.getElementById(
+      "adaptiveQuestions" + complaintNumber
+    );
+
+  const complaintType = selector.value;
+
+  container.innerHTML = "";
+
+  if (!complaintType) {
+    return;
+  }
+
+  const questions =
+    complaintQuestionBank[complaintType] ||
+    complaintQuestionBank.default;
+
+  questions.forEach(function(question) {
+    const wrapper = document.createElement("div");
+    wrapper.className = "adaptive-question";
+
+    const label = document.createElement("label");
+    label.textContent = question.label;
+
+    if (question.type === "select") {
+      const select = document.createElement("select");
+
+      select.id =
+        question.id + complaintNumber;
+
+      const blank = document.createElement("option");
+      blank.value = "";
+      blank.textContent = "Select";
+      select.appendChild(blank);
+
+      question.options.forEach(function(optionText) {
+        const option = document.createElement("option");
+        option.value = optionText;
+        option.textContent = optionText;
+        select.appendChild(option);
+      });
+
+      label.appendChild(select);
+      wrapper.appendChild(label);
+    }
+
+    if (
+      question.type === "text" ||
+      question.type === "number"
+    ) {
+      const input = document.createElement("input");
+
+      input.type = question.type;
+      input.id =
+        question.id + complaintNumber;
+
+      if (question.type === "number") {
+        input.min = "0";
+      }
+
+      label.appendChild(input);
+      wrapper.appendChild(label);
+    }
+
+    if (question.type === "checkbox") {
+      wrapper.appendChild(label);
+
+      const checkboxGroup =
+        document.createElement("div");
+
+      checkboxGroup.className =
+        "checkbox-group";
+
+      question.options.forEach(function(optionText) {
+        const optionLabel =
+          document.createElement("label");
+
+        optionLabel.className =
+          "checkbox-option";
+
+        const checkbox =
+          document.createElement("input");
+
+        checkbox.type = "checkbox";
+        checkbox.value = optionText;
+        checkbox.name =
+          question.id + complaintNumber;
+
+        optionLabel.appendChild(checkbox);
+        optionLabel.appendChild(
+          document.createTextNode(optionText)
+        );
+
+        checkboxGroup.appendChild(optionLabel);
+      });
+
+      wrapper.appendChild(checkboxGroup);
+    }
+
+    container.appendChild(wrapper);
+  });
+}
     function reviewComplaints() {
       const complaint1 =
         document.getElementById("complaint1").value.trim();
