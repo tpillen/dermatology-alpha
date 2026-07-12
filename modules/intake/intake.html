@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <title>New Patient Dermatology Intake</title>
+
+  <style>
+    :root {
+      --dark-green: #174f46;
+      --green: #1f8278;
+      --light-green: #dcece8;
+      --background: #eef4f2;
+      --white: #ffffff;
+      --text: #22312e;
+      --muted: #64736f;
+      --border: #cbd8d4;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+      background: var(--background);
+      color: var(--text);
+    }
+
+    header {
+      background: var(--dark-green);
+      color: var(--white);
+      padding: 18px;
+    }
+
+    .header-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    header p {
+      margin: 5px 0 0;
+      opacity: 0.85;
+    }
+
+    .version {
+      border: 1px solid rgba(255,255,255,0.5);
+      border-radius: 20px;
+      padding: 7px 12px;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 24px auto;
+      padding: 0 16px 40px;
+    }
+
+    .intro {
+      text-align: center;
+      margin-bottom: 22px;
+    }
+
+    .intro h2 {
+      color: var(--dark-green);
+      margin-bottom: 8px;
+    }
+
+    .intro p {
+      color: var(--muted);
+    }
+
+    .complaint-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-top: 6px solid var(--green);
+      border-radius: 15px;
+      padding: 22px;
+      margin-bottom: 18px;
+      box-shadow: 0 5px 18px rgba(23,79,70,0.07);
+    }
+
+    .complaint-card.optional {
+      border-top-color: #8fa9a3;
+    }
+
+    .complaint-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 18px;
+    }
+
+    .complaint-header h3 {
+      margin: 0;
+      color: var(--dark-green);
+    }
+
+    .status-label {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    label {
+      display: block;
+      color: var(--dark-green);
+      font-weight: 650;
+      margin-bottom: 15px;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      margin-top: 6px;
+      padding: 12px;
+      border: 1px solid #b8c8c3;
+      border-radius: 9px;
+      font: inherit;
+      color: var(--text);
+      background: var(--white);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 90px;
+    }
+
+    .voice-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+      align-items: start;
+    }
+
+    button {
+      border: none;
+      border-radius: 9px;
+      padding: 12px 16px;
+      background: var(--green);
+      color: var(--white);
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: var(--dark-green);
+    }
+
+    .voice-button {
+      margin-top: 6px;
+      white-space: nowrap;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 22px;
+    }
+
+    .secondary {
+      background: #e5eeeb;
+      color: var(--dark-green);
+      border: 1px solid var(--border);
+    }
+
+    .notice {
+      margin-top: 20px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 650px) {
+      .field-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .voice-row {
+        grid-template-columns: 1fr;
+      }
+
+      .complaint-header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .actions {
+        flex-direction: column;
+      }
+
+      button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="header-inner">
+      <div>
+        <h1>Dermatology Intake Alpha</h1>
+        <p>New Patient Intake</p>
+      </div>
+
+      <div class="version">Alpha 0.2</div>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="intro">
+      <h2>Prioritized Dermatology Complaints</h2>
+
+      <p>
+        Please list no more than three concerns in order of importance.
+      </p>
+    </section>
+
+    <section class="complaint-card">
+      <div class="complaint-header">
+        <h3>Most Concerning Complaint #1</h3>
+        <span class="status-label">Required</span>
+      </div>
+
+      <label>
+        What is your primary skin concern?
+        <textarea
+          id="complaint1"
+          placeholder="Example: Red, itchy rash on my left forearm"
+        ></textarea>
+      </label>
+
+      <div class="field-grid">
+        <label>
+          Where is it located?
+          <input
+            id="location1"
+            type="text"
+            placeholder="Example: Left forearm"
+          >
+        </label>
+
+        <label>
+          How long has it been present?
+          <input
+            id="duration1"
+            type="text"
+            placeholder="Example: Three weeks"
+          >
+        </label>
+      </div>
+
+      <label>
+        Describe the symptoms
+        <div class="voice-row">
+          <textarea
+            id="symptoms1"
+            placeholder="Example: Itching, scaling, bleeding, pain"
+          ></textarea>
+
+          <button
+            class="voice-button"
+            type="button"
+            onclick="startVoice('symptoms1', this)"
+          >
+            Voice Entry
+          </button>
+        </div>
+      </label>
+    </section>
+
+    <section class="complaint-card optional">
+      <div class="complaint-header">
+        <h3>Next Complaint #2</h3>
+        <span class="status-label">Optional</span>
+      </div>
+
+      <label>
+        What is your next skin concern?
+        <textarea
+          id="complaint2"
+          placeholder="Enter a second concern"
+        ></textarea>
+      </label>
+
+      <div class="field-grid">
+        <label>
+          Where is it located?
+          <input
+            id="location2"
+            type="text"
+            placeholder="Body location"
+          >
+        </label>
+
+        <label>
+          How long has it been present?
+          <input
+            id="duration2"
+            type="text"
+            placeholder="Duration"
+          >
+        </label>
+      </div>
+
+      <label>
+        Describe the symptoms
+        <div class="voice-row">
+          <textarea
+            id="symptoms2"
+            placeholder="Describe symptoms"
+          ></textarea>
+
+          <button
+            class="voice-button"
+            type="button"
+            onclick="startVoice('symptoms2', this)"
+          >
+            Voice Entry
+          </button>
+        </div>
+      </label>
+    </section>
+
+    <section class="complaint-card optional">
+      <div class="complaint-header">
+        <h3>Next Complaint #3</h3>
+        <span class="status-label">Optional</span>
+      </div>
+
+      <label>
+        What is your third skin concern?
+        <textarea
+          id="complaint3"
+          placeholder="Enter a third concern"
+        ></textarea>
+      </label>
+
+      <div class="field-grid">
+        <label>
+          Where is it located?
+          <input
+            id="location3"
+            type="text"
+            placeholder="Body location"
+          >
+        </label>
+
+        <label>
+          How long has it been present?
+          <input
+            id="duration3"
+            type="text"
+            placeholder="Duration"
+          >
+        </label>
+      </div>
+
+      <label>
+        Describe the symptoms
+        <div class="voice-row">
+          <textarea
+            id="symptoms3"
+            placeholder="Describe symptoms"
+          ></textarea>
+
+          <button
+            class="voice-button"
+            type="button"
+            onclick="startVoice('symptoms3', this)"
+          >
+            Voice Entry
+          </button>
+        </div>
+      </label>
+    </section>
+
+    <div class="actions">
+      <button
+        class="secondary"
+        type="button"
+        onclick="window.location.href='../../index.html'"
+      >
+        Return to Home
+      </button>
+
+      <button
+        type="button"
+        onclick="reviewComplaints()"
+      >
+        Review Complaints
+      </button>
+    </div>
+
+    <div class="notice">
+      Synthetic test data only. Do not enter real patient information.
+    </div>
+
+  </main>
+
+  <script>
+    function reviewComplaints() {
+      const complaint1 =
+        document.getElementById("complaint1").value.trim();
+
+      if (!complaint1) {
+        alert("Most Concerning Complaint #1 is required.");
+        return;
+      }
+
+      alert(
+        "Three-complaint intake captured successfully. " +
+        "Provider review will be added in the next version."
+      );
+    }
+
+    function startVoice(targetId, button) {
+      const SpeechRecognition =
+        window.SpeechRecognition ||
+        window.webkitSpeechRecognition;
+
+      if (!SpeechRecognition) {
+        alert(
+          "Browser voice recognition is unavailable. " +
+          "You may still use the microphone on your device keyboard."
+        );
+        return;
+      }
+
+      const recognition = new SpeechRecognition();
+
+      recognition.lang = "en-US";
+      recognition.interimResults = false;
+      recognition.continuous = false;
+
+      const originalText = button.textContent;
+      button.textContent = "Listening...";
+
+      recognition.onresult = function(event) {
+        const transcript =
+          event.results[0][0].transcript;
+
+        const field =
+          document.getElementById(targetId);
+
+        field.value =
+          (field.value + " " + transcript).trim();
+      };
+
+      recognition.onerror = function() {
+        alert("Voice entry could not be completed.");
+      };
+
+      recognition.onend = function() {
+        button.textContent = originalText;
+      };
+
+      recognition.start();
+    }
+  </script>
+
+</body>
+</html>
