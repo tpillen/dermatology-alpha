@@ -273,7 +273,40 @@
 </head>
 
 <body>
+<script>
+  const disclosureRecord =
+    localStorage.getItem(
+      "dermKnowledgeDisclosureAcknowledgment"
+    );
 
+  if (!disclosureRecord) {
+    window.location.replace(
+      "../disclosure/disclosure.html"
+    );
+  } else {
+    try {
+      const acknowledgment =
+        JSON.parse(disclosureRecord);
+
+      if (
+        acknowledgment.acknowledged !== true ||
+        acknowledgment.disclosureVersion !== "1.0"
+      ) {
+        window.location.replace(
+          "../disclosure/disclosure.html"
+        );
+      }
+    } catch (error) {
+      localStorage.removeItem(
+        "dermKnowledgeDisclosureAcknowledgment"
+      );
+
+      window.location.replace(
+        "../disclosure/disclosure.html"
+      );
+    }
+  }
+</script>
   <header>
     <div class="header-inner">
       <div>
