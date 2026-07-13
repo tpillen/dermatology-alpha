@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <title>Patient Questionnaire and Appointment Disclosure</title>
+
+  <style>
+    :root {
+      --dark-green: #174f46;
+      --green: #1f8278;
+      --light-green: #dcece8;
+      --background: #eef4f2;
+      --white: #ffffff;
+      --text: #22312e;
+      --muted: #64736f;
+      --border: #cbd8d4;
+      --warning-background: #fff8df;
+      --warning-border: #e6d69a;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+      background: var(--background);
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    header {
+      background: var(--dark-green);
+      color: var(--white);
+      padding: 18px;
+    }
+
+    .header-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    header p {
+      margin: 5px 0 0;
+      opacity: 0.85;
+    }
+
+    .version {
+      border: 1px solid rgba(255,255,255,0.5);
+      border-radius: 20px;
+      padding: 7px 12px;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 24px auto;
+      padding: 0 16px 40px;
+    }
+
+    .card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      padding: 26px;
+      box-shadow: 0 5px 18px rgba(23,79,70,0.07);
+    }
+
+    h2,
+    h3 {
+      color: var(--dark-green);
+    }
+
+    h2 {
+      margin-top: 0;
+      text-align: center;
+    }
+
+    h3 {
+      margin-top: 28px;
+      margin-bottom: 8px;
+    }
+
+    .intro {
+      text-align: center;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+
+    .appointment-times {
+      background: var(--light-green);
+      border-radius: 10px;
+      padding: 14px 18px;
+      margin: 14px 0;
+    }
+
+    .appointment-times ul {
+      margin: 6px 0;
+    }
+
+    .emergency {
+      margin-top: 24px;
+      padding: 15px;
+      background: var(--warning-background);
+      border: 1px solid var(--warning-border);
+      border-radius: 10px;
+    }
+
+    .acknowledgment {
+      margin-top: 28px;
+      padding-top: 22px;
+      border-top: 1px solid var(--border);
+    }
+
+    .checkbox-row {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      margin: 14px 0;
+      color: var(--text);
+    }
+
+    .checkbox-row input {
+      width: auto;
+      margin-top: 5px;
+      transform: scale(1.15);
+    }
+
+    .actions {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 26px;
+    }
+
+    button {
+      border: none;
+      border-radius: 9px;
+      padding: 13px 18px;
+      background: var(--green);
+      color: var(--white);
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover:not(:disabled) {
+      background: var(--dark-green);
+    }
+
+    button:disabled {
+      background: #aebbb7;
+      cursor: not-allowed;
+      opacity: 0.75;
+    }
+
+    .secondary {
+      background: #e5eeeb;
+      color: var(--dark-green);
+      border: 1px solid var(--border);
+    }
+
+    .record-status {
+      display: none;
+      margin-top: 18px;
+      padding: 12px;
+      background: var(--light-green);
+      border-radius: 9px;
+      color: var(--dark-green);
+      font-size: 14px;
+    }
+
+    .footer-note {
+      margin-top: 22px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 650px) {
+      .header-inner {
+        align-items: flex-start;
+      }
+
+      .actions {
+        flex-direction: column;
+      }
+
+      button {
+        width: 100%;
+      }
+
+      .card {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="header-inner">
+      <div>
+        <h1>DermKnowledge</h1>
+        <p>Patient Information and Consent Module</p>
+      </div>
+
+      <div class="version">Alpha 0.4</div>
+    </div>
+  </header>
+
+  <main>
+    <section class="card">
+
+      <h2>
+        Patient Questionnaire and Appointment Disclosure
+      </h2>
+
+      <p class="intro">
+        Please read the information below before beginning
+        your questionnaire.
+      </p>
+
+      <h3>Purpose of This Questionnaire</h3>
+
+      <p>
+        This questionnaire is provided to collect preliminary
+        health information before your appointment. The information
+        you provide helps your clinician prepare for your visit,
+        improves the efficiency of the encounter, and allows more
+        time to focus on the concerns that are most important to you
+        during your appointment.
+      </p>
+
+      <h3>Medical Record Disclaimer</h3>
+
+      <p>
+        Information entered into this questionnaire is preliminary
+        and is provided by the patient before the clinical evaluation.
+        Patient-entered information does not become part of the
+        official medical record unless and until it has been reviewed,
+        verified, and incorporated into the medical record by the
+        treating clinician.
+      </p>
+
+      <p>
+        The treating clinician retains sole professional
+        responsibility and discretion, consistent with applicable
+        standards of medical care, to review, clarify, revise,
+        supplement, or exclude patient-entered information as
+        necessary to ensure that the medical record is accurate,
+        complete, and clinically appropriate.
+      </p>
+
+      <p>
+        The official medical record consists only of documentation
+        that has been finalized and authenticated by the treating
+        clinician.
+      </p>
+
+      <p>
+        Completion of this questionnaire does not constitute medical
+        advice, does not replace the clinician's independent history,
+        physical examination, assessment, clinical judgment, or
+        medical decision-making, and does not establish a
+        clinician-patient relationship beyond the scheduled
+        healthcare encounter.
+      </p>
+
+      <h3>Appointment Expectations</h3>
+
+      <p>
+        To provide timely access to care for all patients, appointment
+        times are generally scheduled for approximately:
+      </p>
+
+      <div class="appointment-times">
+        <ul>
+          <li>
+            <strong>20 minutes for new patients</strong>
+          </li>
+
+          <li>
+            <strong>10 minutes for established patients</strong>
+          </li>
+        </ul>
+      </div>
+
+      <p>
+        During your visit, the clinician will prioritize your concerns
+        based on medical necessity, clinical urgency, patient safety,
+        and the time available.
+      </p>
+
+      <p>
+        Although every concern you identify is important, it may not
+        be possible to fully evaluate or treat every issue during a
+        single appointment. Additional concerns may require one or
+        more follow-up visits to ensure that they receive appropriate
+        evaluation and management.
+      </p>
+
+      <p>
+        Please list your concerns in order of importance, with your
+        most important concern listed first.
+      </p>
+
+      <p>
+        If you have a concern that you believe requires immediate
+        medical attention, please notify the office staff before
+        completing this questionnaire.
+      </p>
+
+      <div class="emergency">
+        <strong>Medical emergencies:</strong>
+
+        This questionnaire is not intended for reporting medical
+        emergencies. If you believe you are experiencing a medical
+        emergency, call 911 or go to the nearest emergency department
+        immediately.
+      </div>
+
+      <div class="acknowledgment">
+
+        <h3>Patient Acknowledgment</h3>
+
+        <p>
+          Before continuing, please acknowledge each statement:
+        </p>
+
+        <label class="checkbox-row">
+          <input
+            id="acknowledgment1"
+            type="checkbox"
+            onchange="updateContinueButton()"
+          >
+
+          <span>
+            I have read and understand the information provided above.
+          </span>
+        </label>
+
+        <label class="checkbox-row">
+          <input
+            id="acknowledgment2"
+            type="checkbox"
+            onchange="updateContinueButton()"
+          >
+
+          <span>
+            I understand that this questionnaire is intended to
+            improve the efficiency of my appointment and that the
+            treating clinician will review and verify the information
+            I provide.
+          </span>
+        </label>
+
+        <label class="checkbox-row">
+          <input
+            id="acknowledgment3"
+            type="checkbox"
+            onchange="updateContinueButton()"
+          >
+
+          <span>
+            I understand that not all of my concerns may be addressed
+            during today's appointment and that additional follow-up
+            visits may be recommended.
+          </span>
+        </label>
+
+        <div class="actions">
+
+          <button
+            class="secondary"
+            type="button"
+            onclick="window.location.href='../../index.html'"
+          >
+            Return to Home
+          </button>
+
+          <button
+            id="continueButton"
+            type="button"
+            disabled
+            onclick="recordAcknowledgment()"
+          >
+            Begin Dermatology Questionnaire
+          </button>
+
+        </div>
+
+        <div
+          id="recordStatus"
+          class="record-status"
+        ></div>
+
+      </div>
+
+      <div class="footer-note">
+        Disclosure Version 1.0 · DermKnowledge Alpha 0.4
+      </div>
+
+    </section>
+  </main>
+
+  <script>
+    const disclosureVersion = "1.0";
+    const applicationVersion = "Alpha 0.4";
+
+    function updateContinueButton() {
+      const acknowledgment1 =
+        document.getElementById("acknowledgment1").checked;
+
+      const acknowledgment2 =
+        document.getElementById("acknowledgment2").checked;
+
+      const acknowledgment3 =
+        document.getElementById("acknowledgment3").checked;
+
+      const allAcknowledged =
+        acknowledgment1 &&
+        acknowledgment2 &&
+        acknowledgment3;
+
+      document.getElementById(
+        "continueButton"
+      ).disabled = !allAcknowledged;
+    }
+
+    function recordAcknowledgment() {
+      const acknowledgmentTime =
+        new Date().toISOString();
+
+      const acknowledgmentRecord = {
+        acknowledged: true,
+        acknowledgedAt: acknowledgmentTime,
+        disclosureVersion: disclosureVersion,
+        applicationVersion: applicationVersion,
+        browser: navigator.userAgent
+      };
+
+      localStorage.setItem(
+        "dermKnowledgeDisclosureAcknowledgment",
+        JSON.stringify(acknowledgmentRecord)
+      );
+
+      const readableTime =
+        new Date(
+          acknowledgmentTime
+        ).toLocaleString();
+
+      const recordStatus =
+        document.getElementById("recordStatus");
+
+      recordStatus.style.display = "block";
+
+      recordStatus.textContent =
+        "Acknowledgment recorded: " +
+        readableTime +
+        " · Disclosure Version " +
+        disclosureVersion;
+
+      window.setTimeout(function() {
+        window.location.href =
+          "../intake/intake.html";
+      }, 600);
+    }
+  </script>
+
+</body>
+</html>
