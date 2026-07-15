@@ -6,7 +6,7 @@
     name="viewport"
     content="width=device-width, initial-scale=1"
   >
-  <title>DermKnowledge Alpha 1.0 — Provider Workspace</title>
+  <title>DermKnowledge Alpha 1.0.1 — Provider Workspace</title>
 
   <style>
     :root {
@@ -63,7 +63,7 @@
 
     header p {
       margin: 5px 0 0;
-      opacity: 1.08;
+      opacity: 1.0.18;
     }
 
     .version {
@@ -272,7 +272,7 @@
       <h1>DermKnowledge</h1>
       <p>Provider Review and Documentation Workspace</p>
     </div>
-    <div class="version">Alpha 1.0</div>
+    <div class="version">Alpha 1.0.1</div>
   </div>
 </header>
 
@@ -530,7 +530,7 @@
           }).join("\n\n");
 
     const note = [
-      "DERMKNOWLEDGE ALPHA 1.0 — SYNTHETIC TEST NOTE",
+      "DERMKNOWLEDGE ALPHA 1.0.1 — SYNTHETIC TEST NOTE",
       "",
       "Encounter date: " + (encounterDate || "Not entered"),
       "Provider: " + (providerName || "Not entered"),
@@ -587,8 +587,19 @@
       return;
     }
 
+    const generatedClinicNote =
+      document.getElementById(
+        "clinicNote"
+      ).textContent.trim();
+
     const providerRecord = {
       ...encounterRecord,
+      generatedClinicNote:
+        generatedClinicNote &&
+        generatedClinicNote !==
+          "No clinic note generated yet."
+          ? generatedClinicNote
+          : null,
       providerReview: {
         providerName:
           document.getElementById(

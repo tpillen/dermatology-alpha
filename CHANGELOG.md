@@ -1,17 +1,13 @@
-# DermKnowledge Alpha 1.0 — Longitudinal Synthetic Patient Record
+# DermKnowledge Alpha 1.0.1 — Readable Longitudinal Visit Notes
+
+## Changed
+- Longitudinal records display a readable clinical visit note first.
+- Raw JSON is retained in a separate collapsed technical section.
 
 ## Added
-- Synthetic patient creation and selection.
-- Stable synthetic patient ID.
-- Patient context linked to new and follow-up encounters.
-- Provider-attested encounters appended to a longitudinal local record.
-- Synthetic patient record browser.
-- Chronological encounter timeline.
-- Export of a selected synthetic patient and all encounters as JSON.
-
-## New modules
-- `modules/patient/patient.html`
-- `modules/records/records.html`
+- Provider Workspace stores the generated clinic note with each newly saved encounter.
+- Older encounters without a stored note are converted into a readable note dynamically.
+- Improved mobile readability.
 
 ## Safety
-Synthetic testing only. Local browser storage is not secure, durable, multi-user, or HIPAA-compliant.
+Synthetic testing only. Browser localStorage remains unsuitable for real patient information.

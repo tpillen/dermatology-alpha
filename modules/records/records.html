@@ -1,6 +1,9 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>DermKnowledge Alpha 1.0 — Synthetic Patient Records</title>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DermKnowledge Alpha 1.0.1 — Synthetic Patient Records</title>
 <style>
 :root{--dark:#174f46;--green:#1f8278;--bg:#eef4f2;--white:#fff;--text:#22312e;--border:#cbd8d4;--warn:#fff8df}
 *{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.45}
@@ -9,11 +12,12 @@ h1{margin:0;font-size:24px}header p{margin:5px 0 0;opacity:.88}.version{border:1
 main{max-width:1100px;margin:24px auto;padding:0 16px 44px}.card{background:#fff;border:1px solid var(--border);border-radius:15px;padding:22px;margin-bottom:18px;box-shadow:0 5px 18px #174f4612}
 h2,h3,h4{color:var(--dark)}.warning{padding:13px;background:var(--warn);border:1px solid #e6d69a;border-radius:9px;color:#5f4b00;font-size:13px;margin-bottom:16px}
 select{width:100%;padding:12px;border:1px solid #b8c8c3;border-radius:9px;font:inherit}.item{border-left:5px solid var(--green);border-radius:10px;padding:14px;margin:14px 0;background:#fbfdfc;border-top:1px solid var(--border);border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
-.row{margin:4px 0}.label{font-weight:700}details{margin-top:10px;border-top:1px solid var(--border);padding-top:10px}pre{white-space:pre-wrap;word-break:break-word;background:#f7f9f8;border:1px solid var(--border);border-radius:9px;padding:12px;max-height:320px;overflow:auto}
+.row{margin:4px 0}.label{font-weight:700}.note{white-space:pre-wrap;word-break:break-word;background:#f7f9f8;border:1px solid var(--border);border-radius:9px;padding:14px;margin-top:12px;line-height:1.5}
+details{margin-top:12px;border-top:1px solid var(--border);padding-top:10px}pre{white-space:pre-wrap;word-break:break-word;background:#f7f9f8;border:1px solid var(--border);border-radius:9px;padding:12px;max-height:320px;overflow:auto;font-size:13px}
 .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}button{border:0;border-radius:9px;padding:12px 16px;background:var(--green);color:#fff;font-weight:bold;font-size:15px;cursor:pointer}.secondary{background:#e5eeeb;color:var(--dark);border:1px solid var(--border)}
 @media(max-width:650px){.actions{flex-direction:column}button{width:100%}}
 </style></head>
-<body><header><div class="head"><div><h1>DermKnowledge</h1><p>Synthetic Longitudinal Patient Records</p></div><div class="version">Alpha 1.0</div></div></header>
+<body><header><div class="head"><div><h1>DermKnowledge</h1><p>Synthetic Longitudinal Patient Records</p></div><div class="version">Alpha 1.0.1</div></div></header>
 <main>
 <section class="card"><h2>Patient Record Browser</h2><div class="warning">Local synthetic test records only. Browser storage is not HIPAA-compliant, is not a clinical database, and may be cleared at any time.</div>
 <label>Select synthetic patient<select id="patientSelect" onchange="renderTimeline()"><option value="">Select a patient</option></select></label>
@@ -34,9 +38,21 @@ function renderTimeline(){
  if(!list.length){t.innerHTML='<p>No provider-attested encounters are stored for this patient.</p>';return}
  t.innerHTML=list.map(e=>{const pr=e.providerReview||{},label=e.encounterType==='established-patient'?'Established Patient Follow-Up':'New Patient';
  const summary=e.encounterType==='established-patient'?(e.concerns||[]).map(x=>(x.diagnosis||x.concernLabel)+(x.statusSinceLastVisit?' — '+x.statusSinceLastVisit:'')).join('; '):(e.complaints||[]).map(x=>x.complaintTypeLabel||x.complaintLabel).join('; ');
- return `<article class="item"><h4>${esc(label)}</h4><div class="row"><span class="label">Date:</span> ${esc(formatDate(pr.encounterDate||e.generatedAt||''))}</div><div class="row"><span class="label">Provider:</span> ${esc(pr.providerName||'Not entered')}</div><div class="row"><span class="label">Assessment:</span> ${esc(pr.assessment||'Not entered')}</div><div class="row"><span class="label">Plan:</span> ${esc(pr.plan||'Not entered')}</div><div class="row"><span class="label">Encounter summary:</span> ${esc(summary||'No summary available')}</div><details><summary>View complete structured record</summary><pre>${esc(JSON.stringify(e,null,2))}</pre></details></article>`}).join('');
+ const note=e.generatedClinicNote||buildReadableNote(e);
+ return `<article class="item"><h4>${esc(label)}</h4><div class="row"><span class="label">Date:</span> ${esc(formatDate(pr.encounterDate||e.generatedAt||''))}</div><div class="row"><span class="label">Provider:</span> ${esc(pr.providerName||'Not entered')}</div><div class="row"><span class="label">Assessment:</span> ${esc(pr.assessment||'Not entered')}</div><div class="row"><span class="label">Plan:</span> ${esc(pr.plan||'Not entered')}</div><div class="row"><span class="label">Encounter summary:</span> ${esc(summary||'No summary available')}</div><details><summary>View complete visit note</summary><div class="note">${esc(note)}</div></details><details><summary>View technical structured record (JSON)</summary><pre>${esc(JSON.stringify(e,null,2))}</pre></details></article>`}).join('');
 }
-function exportSelectedPatient(){const id=select.value;if(!id){alert('Select a synthetic patient first.');return}const patient=patients.find(x=>x.patientId===id),list=encounters.filter(e=>e.patientContext&&e.patientContext.patientId===id);const record={schemaVersion:'dermknowledge-longitudinal-1.0',applicationVersion:'Alpha 1.0',syntheticTestDataOnly:true,patient,encounters:list};const blob=new Blob([JSON.stringify(record,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='dermknowledge-alpha-1.0-'+id+'.json';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url)}
+function buildReadableNote(e){
+ const pr=e.providerReview||{},patient=e.patientContext||{},lines=['DERMKNOWLEDGE ALPHA 1.0.1 — SYNTHETIC TEST NOTE','','Synthetic patient: '+(patient.patientLabel||'Not entered'),'Synthetic patient ID: '+(patient.patientId||'Not entered'),'Encounter date: '+(pr.encounterDate||formatDate(e.generatedAt||'')),'Provider: '+(pr.providerName||'Not entered'),'','PATIENT-ENTERED HISTORY'];
+ if(e.encounterType==='established-patient'){
+  (e.concerns||[]).forEach(c=>lines.push('',c.concernLabel||'Follow-Up Concern','Problem type: '+(c.problemType||'Not entered'),'Prior diagnosis / working diagnosis: '+(c.diagnosis||'Not entered'),'Status since last visit: '+(c.statusSinceLastVisit||'Not entered'),'Current treatment: '+(c.currentTreatment||'Not entered'),'Adherence: '+(c.adherence||'Not entered'),'Treatment benefit: '+(c.treatmentBenefit||'Not entered'),'Side effects / intolerance: '+(c.sideEffects||'Not entered'),'New symptoms or changes: '+(c.newSymptomsOrChanges||'Not entered'),'Patient visit goal: '+(c.patientVisitGoal||'Not entered'),'Additional comments: '+(c.additionalComments||'Not entered')));
+ }else{
+  (e.complaints||[]).forEach(c=>{lines.push('',c.complaintLabel||'Complaint','Type: '+(c.complaintTypeLabel||'Not entered'),'Patient wording: '+(c.patientDescription||'Captured through structured responses and comments'),'Location: '+(c.location||'Not entered'),'Duration: '+(c.duration||'Not entered'),'Additional symptoms / concerns: '+(c.symptoms||'Not entered'));const r=c.adaptiveResponses||{};const ks=Object.keys(r);if(ks.length){lines.push('Structured responses:');ks.forEach(k=>{const v=Array.isArray(r[k])?r[k].join(', '):r[k];lines.push('- '+humanize(k)+': '+v)})}});
+ }
+ lines.push('','OBJECTIVE EXAMINATION',pr.objectiveExam||'Not entered.','','ASSESSMENT / DIAGNOSES',pr.assessment||'Not entered.','','PLAN / TREATMENT / DIAGNOSTIC WORKUP',pr.plan||'Not entered.','','ICD-10 CODES CONFIRMED BY PROVIDER',pr.icd10||'Not entered.','','CPT CODES CONFIRMED BY PROVIDER',pr.cpt||'Not entered.','','Provider attestation: '+(pr.attested?'Completed':'Not completed'));
+ return lines.join('\n');
+}
+function humanize(v){return String(v).replace(/([a-z])([A-Z])/g,'$1 $2').replace(/[-_]/g,' ').replace(/\b\w/g,l=>l.toUpperCase())}
+function exportSelectedPatient(){const id=select.value;if(!id){alert('Select a synthetic patient first.');return}const patient=patients.find(x=>x.patientId===id),list=encounters.filter(e=>e.patientContext&&e.patientContext.patientId===id);const record={schemaVersion:'dermknowledge-longitudinal-1.0.1',applicationVersion:'Alpha 1.0.1',syntheticTestDataOnly:true,patient,encounters:list};const blob=new Blob([JSON.stringify(record,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='dermknowledge-alpha-1.0.1-'+id+'.json';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url)}
 function formatDate(v){if(!v)return'Not entered';const d=new Date(v);return Number.isNaN(d.getTime())?v:d.toLocaleString()}
 function esc(v){return String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;')}
 renderTimeline();
