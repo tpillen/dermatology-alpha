@@ -1,27 +1,21 @@
-# DermKnowledge Alpha 0.7 — Provider Workspace
+# DermKnowledge Alpha 0.8 — Progressive Complaint Workflow
+
+## Changed
+- Removed redundant free-text prompts asking the patient to restate the concern.
+- Complaint type, adaptive questions, location, duration, and comments now define the concern.
+- Renamed the comment field to “Describe additional symptoms/concerns.”
 
 ## Added
-- New `modules/provider/provider.html`.
-- Patient-entered structured intake transferred to the provider workspace through browser storage.
-- Provider review fields:
-  - objective examination,
-  - assessment / diagnoses,
-  - plan / treatment / diagnostic workup,
-  - provider-confirmed ICD-10 codes,
-  - provider-confirmed CPT codes.
-- Provider attestation with timestamp.
-- Generated synthetic clinic note.
-- Local prototype storage of provider-reviewed encounter.
-- Print / Save as PDF support.
+- Complaint #1 is shown initially.
+- Complaint #2 opens only when the patient reports another concern.
+- Complaint #3 opens only when the patient reports one more concern.
+- The patient is advised that the workflow addresses no more than three prioritized concerns.
+- Hidden complaint modules are excluded from the provider summary and JSON.
 
 ## Preserved
-- Disclosure acknowledgment.
 - Clinical Knowledge Engine.
-- Three prioritized complaints.
-- Adaptive questioning.
-- Transparent prototype attention flags.
-- Voice entry.
+- Disclosure workflow.
+- Provider Workspace.
 - JSON export.
-
-## Safety boundary
-No automated diagnosis, coding, treatment recommendation, or validated triage is performed.
+- Voice entry.
+- Transparent prototype attention flags.

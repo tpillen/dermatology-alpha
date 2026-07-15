@@ -6,7 +6,7 @@
     name="viewport"
     content="width=device-width, initial-scale=1"
   >
-  <title>DermKnowledge Alpha 0.7 — Clinical Knowledge Engine</title>
+  <title>DermKnowledge Alpha 0.8 — Clinical Knowledge Engine</title>
 
   <style>
     :root {
@@ -108,6 +108,45 @@
 
     .complaint-card.optional {
       border-top-color: #8fa9a3;
+    }
+
+    .complaint-card.hidden {
+      display: none;
+    }
+
+    .additional-concern-panel {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      margin: -4px 0 18px;
+      box-shadow: 0 3px 12px rgba(23,79,70,0.05);
+    }
+
+    .additional-concern-panel.hidden {
+      display: none;
+    }
+
+    .additional-concern-panel p {
+      margin: 0 0 12px;
+      color: var(--dark-green);
+      font-weight: 650;
+    }
+
+    .additional-concern-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .limit-notice {
+      padding: 12px;
+      border: 1px solid #e6d69a;
+      background: #fff8df;
+      border-radius: 9px;
+      color: #5f4b00;
+      font-size: 13px;
+      margin-top: 12px;
     }
 
     .complaint-header {
@@ -415,18 +454,72 @@
       <h1>DermKnowledge</h1>
       <p>Clinical Knowledge Engine — Adaptive New Patient Intake</p>
     </div>
-    <div class="version">Alpha 0.7</div>
+    <div class="version">Alpha 0.8</div>
   </div>
 </header>
 
 <main>
   <section class="intro">
     <h2>Prioritized Dermatology Complaints</h2>
-    <p>Please list no more than three concerns in order of importance.</p>
-    <p>Complaint-specific questions will appear after a concern type is selected.</p>
+    <p>Begin with your most important concern. Additional complaint sections will open only when needed.</p>
+    <p>This prototype addresses up to three prioritized concerns per encounter.</p>
   </section>
 
   <div id="complaintsContainer"></div>
+
+  <section
+    id="additionalConcernPanel1"
+    class="additional-concern-panel"
+  >
+    <p>Do you have another skin concern to address today?</p>
+
+    <div class="additional-concern-actions">
+      <button
+        type="button"
+        onclick="showNextComplaint(2)"
+      >
+        Yes — Add Complaint #2
+      </button>
+
+      <button
+        class="secondary"
+        type="button"
+        onclick="declineAdditionalComplaint(2)"
+      >
+        No Additional Concern
+      </button>
+    </div>
+  </section>
+
+  <section
+    id="additionalConcernPanel2"
+    class="additional-concern-panel hidden"
+  >
+    <p>Do you have one more skin concern to address today?</p>
+
+    <div class="additional-concern-actions">
+      <button
+        type="button"
+        onclick="showNextComplaint(3)"
+      >
+        Yes — Add Complaint #3
+      </button>
+
+      <button
+        class="secondary"
+        type="button"
+        onclick="declineAdditionalComplaint(3)"
+      >
+        No Additional Concern
+      </button>
+    </div>
+
+    <div class="limit-notice">
+      This intake addresses no more than three prioritized concerns.
+      Additional comments may be entered in the
+      “Describe additional symptoms/concerns/concerns” field.
+    </div>
+  </section>
 
   <div class="actions">
     <button
@@ -559,7 +652,10 @@
         }).join("");
 
         return `
-          <section class="complaint-card ${definition.number > 1 ? "optional" : ""}">
+          <section
+            id="complaintCard${definition.number}"
+            class="complaint-card ${definition.number > 1 ? "optional hidden" : ""}"
+          >
             <div class="complaint-header">
               <h3>${escapeHtml(definition.title)}</h3>
               <span class="status-label">${escapeHtml(definition.status)}</span>
@@ -580,14 +676,6 @@
               id="adaptiveQuestions${definition.number}"
               class="adaptive-questions"
             ></div>
-
-            <label>
-              ${escapeHtml(definition.prompt)}
-              <textarea
-                id="complaint${definition.number}"
-                placeholder="Describe the concern in your own words"
-              ></textarea>
-            </label>
 
             <div class="field-grid">
               <label>
@@ -610,11 +698,11 @@
             </div>
 
             <label>
-              Describe additional symptoms
+              Describe additional symptoms/concerns
               <div class="voice-row">
                 <textarea
                   id="symptoms${definition.number}"
-                  placeholder="Example: itching, scaling, bleeding, pain"
+                  placeholder="Add symptoms, details, or other comments about this concern"
                 ></textarea>
 
                 <button
@@ -629,6 +717,25 @@
           </section>
         `;
       }).join("");
+
+    const thirdCard =
+      document.getElementById(
+        "complaintCard3"
+      );
+
+    const finalNotice =
+      document.createElement("div");
+
+    finalNotice.className =
+      "limit-notice";
+
+    finalNotice.textContent =
+      "This intake addresses a maximum of three prioritized concerns. " +
+      "Add any further comments in the “Describe additional symptoms/concerns” field.";
+
+    thirdCard.appendChild(
+      finalNotice
+    );
   }
 
   function renderAdaptiveQuestions(complaintNumber) {
@@ -795,10 +902,7 @@
     const complaintType =
       typeElement.value;
 
-    const complaintText =
-      document.getElementById(
-        "complaint" + complaintNumber
-      ).value.trim();
+    const complaintText = "";
 
     const location =
       document.getElementById(
@@ -815,10 +919,21 @@
         "symptoms" + complaintNumber
       ).value.trim();
 
+    const complaintCard =
+      document.getElementById(
+        "complaintCard" + complaintNumber
+      );
+
+    if (
+      complaintNumber > 1 &&
+      complaintCard.classList.contains("hidden")
+    ) {
+      return null;
+    }
+
     if (
       complaintNumber > 1 &&
       !complaintType &&
-      !complaintText &&
       !location &&
       !duration &&
       !symptoms
@@ -967,16 +1082,91 @@
     };
   }
 
+  function showNextComplaint(complaintNumber) {
+    const card =
+      document.getElementById(
+        "complaintCard" + complaintNumber
+      );
+
+    card.classList.remove("hidden");
+
+    if (complaintNumber === 2) {
+      document.getElementById(
+        "additionalConcernPanel1"
+      ).classList.add("hidden");
+
+      document.getElementById(
+        "additionalConcernPanel2"
+      ).classList.remove("hidden");
+    }
+
+    if (complaintNumber === 3) {
+      document.getElementById(
+        "additionalConcernPanel2"
+      ).classList.add("hidden");
+    }
+
+    card.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+  }
+
+  function declineAdditionalComplaint(complaintNumber) {
+    if (complaintNumber === 2) {
+      hideAndResetComplaint(2);
+      hideAndResetComplaint(3);
+
+      document.getElementById(
+        "additionalConcernPanel2"
+      ).classList.add("hidden");
+    }
+
+    if (complaintNumber === 3) {
+      hideAndResetComplaint(3);
+    }
+  }
+
+  function hideAndResetComplaint(complaintNumber) {
+    const card =
+      document.getElementById(
+        "complaintCard" + complaintNumber
+      );
+
+    if (!card) {
+      return;
+    }
+
+    card.classList.add("hidden");
+
+    card.querySelectorAll(
+      "select, input, textarea"
+    ).forEach(function(element) {
+      if (
+        element.type === "checkbox" ||
+        element.type === "radio"
+      ) {
+        element.checked = false;
+      } else {
+        element.value = "";
+      }
+    });
+
+    const adaptive =
+      document.getElementById(
+        "adaptiveQuestions" + complaintNumber
+      );
+
+    adaptive.innerHTML = "";
+  }
+
   function reviewComplaints() {
     const type1 =
       document.getElementById(
         "complaintType1"
       ).value;
 
-    const complaint1 =
-      document.getElementById(
-        "complaint1"
-      ).value.trim();
+    const complaint1 = "";
 
     if (!type1) {
       alert(
@@ -1033,6 +1223,27 @@
       return;
     }
 
+    for (const complaintNumber of [2, 3]) {
+      const card =
+        document.getElementById(
+          "complaintCard" + complaintNumber
+        );
+
+      if (
+        !card.classList.contains("hidden") &&
+        !document.getElementById(
+          "complaintType" + complaintNumber
+        ).value
+      ) {
+        alert(
+          "Please select the type of concern for Complaint #" +
+          complaintNumber +
+          ", or choose No Additional Concern."
+        );
+        return;
+      }
+    }
+
     const complaints =
       [1, 2, 3]
         .map(collectComplaint)
@@ -1047,9 +1258,9 @@
 
     lastStructuredRecord = {
       schemaVersion:
-        "dermknowledge-intake-0.7",
+        "dermknowledge-intake-0.8",
       applicationVersion:
-        "Alpha 0.7",
+        "Alpha 0.8",
       clinicalKnowledgeEngine: {
         name:
           clinicalKnowledge.engine.name,
@@ -1166,7 +1377,7 @@
 
             <div class="summary-row">
               <span class="summary-label">Patient wording:</span>
-              ${escapeHtml(complaint.patientDescription || "Captured through structured responses")}
+              ${escapeHtml(complaint.patientDescription || "Captured through structured responses and comments")}
             </div>
 
             <div class="summary-row">
@@ -1255,7 +1466,7 @@
 
     link.href = url;
     link.download =
-      "dermknowledge-alpha-0.7-test-record.json";
+      "dermknowledge-alpha-0.8-test-record.json";
 
     document.body.appendChild(link);
     link.click();

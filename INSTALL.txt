@@ -1,34 +1,31 @@
-DermKnowledge Alpha 0.7 — Complete Project Replacement
+DermKnowledge Alpha 0.8 — Complete Project Replacement
 
 PURPOSE
-Alpha 0.7 adds the Provider Review and Documentation Workspace.
+Alpha 0.8 adds a progressive complaint workflow and removes redundant free-text concern prompts.
 
 INSTALLATION
-1. Download and unzip DermKnowledge_Alpha_0_7_Complete_Project.zip.
+1. Download and unzip DermKnowledge_Alpha_0_8_Complete_Project.zip.
 2. Open the extracted folder.
 3. Copy the complete contents into:
    C:\Users\tpill\OneDrive\Documents\GitHub\dermatology-alpha
 4. Choose "Replace the files in the destination."
-5. Confirm the new provider folder is present:
-   C:\Users\tpill\OneDrive\Documents\GitHub\dermatology-alpha\modules\provider
-6. Open GitHub Desktop.
-7. Commit:
-   Add Alpha 0.7 provider workspace
-8. Push origin.
-9. Test:
+5. Open GitHub Desktop.
+6. Commit:
+   Add Alpha 0.8 progressive complaint workflow
+7. Push origin.
+8. Test:
    https://tpillen.github.io/dermatology-alpha/
 
 TESTING
-- Landing page shows Alpha 0.7.
-- Disclosure workflow still works.
-- Complete a synthetic intake and choose Review Structured Intake.
-- Click Open Provider Workspace.
-- Confirm patient-entered complaints load.
-- Enter synthetic objective examination, assessment, plan, ICD-10, and CPT text.
-- Generate Clinic Note.
-- Complete provider attestation.
-- Save Test Record Locally.
-- Print / Save as PDF.
+- Complaint #1 is visible initially.
+- Complaint #2 and #3 are hidden initially.
+- After Complaint #1, choose Yes to reveal Complaint #2.
+- Choose No to keep Complaint #2 and #3 hidden.
+- After Complaint #2, choose Yes to reveal Complaint #3.
+- The three-concern limit notice is visible.
+- The label reads “Describe additional symptoms/concerns.”
+- Review Structured Intake works with one, two, or three complaints.
+- Provider Workspace receives only opened and completed complaint modules.
+- JSON export and voice entry continue to work.
 
-SAFETY
-Use synthetic data only. Alpha 0.7 does not provide automated diagnoses, code selection, treatment recommendations, or validated triage.
+Use synthetic test data only.

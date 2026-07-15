@@ -6,7 +6,7 @@
     name="viewport"
     content="width=device-width, initial-scale=1"
   >
-  <title>DermKnowledge Alpha 0.7 — Provider Workspace</title>
+  <title>DermKnowledge Alpha 0.8 — Provider Workspace</title>
 
   <style>
     :root {
@@ -272,7 +272,7 @@
       <h1>DermKnowledge</h1>
       <p>Provider Review and Documentation Workspace</p>
     </div>
-    <div class="version">Alpha 0.7</div>
+    <div class="version">Alpha 0.8</div>
   </div>
 </header>
 
@@ -489,7 +489,7 @@
               <span class="summary-label">Patient wording:</span>
               ${escapeHtml(
                 complaint.patientDescription ||
-                "Captured through structured responses"
+                "Captured through structured responses and comments"
               )}
             </div>
 
@@ -590,7 +590,7 @@
             "Patient wording: " +
               (
                 complaint.patientDescription ||
-                "Captured through structured responses"
+                "Captured through structured responses and comments"
               ),
             "Location: " +
               (complaint.location || "Not entered"),
@@ -605,7 +605,7 @@
         }).join("\n\n");
 
     const note = [
-      "DERMKNOWLEDGE ALPHA 0.7 — SYNTHETIC TEST NOTE",
+      "DERMKNOWLEDGE ALPHA 0.8 — SYNTHETIC TEST NOTE",
       "",
       "Encounter date: " + (encounterDate || "Not entered"),
       "Provider: " + (providerName || "Not entered"),
