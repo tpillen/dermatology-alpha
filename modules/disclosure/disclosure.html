@@ -452,6 +452,27 @@
     }
 
     function recordAcknowledgment() {
+      const acknowledgment1 =
+        document.getElementById("acknowledgment1").checked;
+
+      const acknowledgment2 =
+        document.getElementById("acknowledgment2").checked;
+
+      const acknowledgment3 =
+        document.getElementById("acknowledgment3").checked;
+
+      if (
+        !acknowledgment1 ||
+        !acknowledgment2 ||
+        !acknowledgment3
+      ) {
+        alert(
+          "Please acknowledge all three statements before continuing."
+        );
+        updateContinueButton();
+        return;
+      }
+
       const acknowledgmentTime =
         new Date().toISOString();
 
