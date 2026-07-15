@@ -1,0 +1,25 @@
+DermKnowledge Alpha 0.5 — Complete Project Replacement
+
+1. Download and unzip DermKnowledge_Alpha_0_5_Complete_Project.zip.
+2. Open the extracted DermKnowledge_Alpha_0_5_Complete_Project folder.
+3. Copy the complete contents into:
+   C:\Users\tpill\OneDrive\Documents\GitHub\dermatology-alpha
+4. Choose "Replace the file in the destination" when Windows asks.
+5. Open GitHub Desktop.
+6. Confirm changed files, then commit:
+   Add Alpha 0.5 adaptive clinical intelligence prototype
+7. Push origin.
+8. Test the public URL:
+   https://tpillen.github.io/dermatology-alpha/
+
+Testing checklist:
+- Landing page shows Alpha 0.5.
+- Start New Patient opens disclosure.
+- All three acknowledgments are required.
+- Continue opens the intake.
+- Each complaint type produces adaptive questions.
+- Review Structured Intake creates a provider summary and JSON.
+- Download JSON works.
+- Voice Entry is tested on the public HTTPS site, not only the VS Code browser.
+
+Use synthetic test data only.
