@@ -1,19 +1,31 @@
-# DermKnowledge Alpha 0.5
+# DermKnowledge Alpha 0.6 — Clinical Knowledge Engine
+
+## Architectural change
+Clinical knowledge is now separated from the intake user interface.
+
+## New file
+- `data/clinical-knowledge.js`
 
 ## Added
-- Reusable, data-driven three-complaint interface.
-- Expanded complaint-specific question bank.
-- Transparent prototype attention flags.
-- Provider-oriented structured summary.
-- Structured JSON generation and download.
-- Print / Save as PDF support.
-- Consistent Alpha 0.5 branding.
-
-## Safety boundary
-The attention rules are not validated medical triage scores and must not be used for diagnosis, urgency determination, treatment, or clinical deployment. Provider review remains mandatory.
+- Versioned clinical knowledge engine metadata.
+- Centralized pathway order and labels.
+- Centralized question definitions.
+- Module title and clinical-purpose statement for every complaint pathway.
+- Knowledge-engine metadata in structured JSON.
+- Knowledge-module provenance in each complaint record.
+- Provider summary identifies the clinical knowledge module used.
+- Explicit safety boundary embedded in the engine metadata.
 
 ## Preserved
 - Disclosure acknowledgment workflow.
 - Direct intake-route protection.
+- Three prioritized complaints.
+- Adaptive questions.
+- Transparent prototype attention flags.
 - Voice entry.
-- Responsive mobile layout.
+- Provider summary.
+- JSON download.
+- Print / Save as PDF.
+
+## Validation status
+Prototype only. Clinical pathways and rules require formal expert review, testing, and governance before clinical deployment.

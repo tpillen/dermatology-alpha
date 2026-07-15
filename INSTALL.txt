@@ -1,25 +1,33 @@
-DermKnowledge Alpha 0.5 — Complete Project Replacement
+DermKnowledge Alpha 0.6 — Complete Project Replacement
 
-1. Download and unzip DermKnowledge_Alpha_0_5_Complete_Project.zip.
-2. Open the extracted DermKnowledge_Alpha_0_5_Complete_Project folder.
+PURPOSE
+Alpha 0.6 separates the clinical knowledge library from the intake user interface.
+
+INSTALLATION
+1. Download and unzip DermKnowledge_Alpha_0_6_Complete_Project.zip.
+2. Open the extracted DermKnowledge_Alpha_0_6_Complete_Project folder.
 3. Copy the complete contents into:
    C:\Users\tpill\OneDrive\Documents\GitHub\dermatology-alpha
-4. Choose "Replace the file in the destination" when Windows asks.
-5. Open GitHub Desktop.
-6. Confirm changed files, then commit:
-   Add Alpha 0.5 adaptive clinical intelligence prototype
-7. Push origin.
-8. Test the public URL:
-   https://tpillen.github.io/dermatology-alpha/
+4. Choose "Replace the files in the destination" when Windows asks.
+5. Be sure the new data folder is copied:
+   C:\Users\tpill\OneDrive\Documents\GitHub\dermatology-alpha\data
+6. Open GitHub Desktop.
+7. Confirm that data\clinical-knowledge.js and the updated HTML files are detected.
+8. Commit:
+   Add Alpha 0.6 clinical knowledge engine
+9. Push origin.
+10. Test:
+    https://tpillen.github.io/dermatology-alpha/
 
-Testing checklist:
-- Landing page shows Alpha 0.5.
+TESTING
+- Landing page shows Alpha 0.6.
 - Start New Patient opens disclosure.
-- All three acknowledgments are required.
-- Continue opens the intake.
-- Each complaint type produces adaptive questions.
-- Review Structured Intake creates a provider summary and JSON.
-- Download JSON works.
-- Voice Entry is tested on the public HTTPS site, not only the VS Code browser.
+- All acknowledgments are required.
+- Intake loads without a knowledge-library error.
+- Each complaint type displays its module title, purpose, and adaptive questions.
+- Review Structured Intake includes the knowledge module in the provider summary.
+- JSON includes clinicalKnowledgeEngine metadata and knowledgeModule data.
+- Voice Entry is tested on the public HTTPS site.
 
-Use synthetic test data only.
+SAFETY
+Use synthetic test data only. The pathways and attention flags are unvalidated prototype logic.

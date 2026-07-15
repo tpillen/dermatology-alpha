@@ -6,7 +6,7 @@
     name="viewport"
     content="width=device-width, initial-scale=1"
   >
-  <title>DermKnowledge Alpha 0.5 — New Patient Intake</title>
+  <title>DermKnowledge Alpha 0.6 — Clinical Knowledge Engine</title>
 
   <style>
     :root {
@@ -215,6 +215,26 @@
       display: none;
     }
 
+    .knowledge-module {
+      margin-bottom: 14px;
+      padding: 12px;
+      border-left: 4px solid var(--green);
+      background: var(--light-green);
+      border-radius: 8px;
+    }
+
+    .knowledge-module strong {
+      display: block;
+      color: var(--dark-green);
+      margin-bottom: 4px;
+    }
+
+    .knowledge-module p {
+      margin: 0;
+      color: var(--text);
+      font-size: 14px;
+    }
+
     .adaptive-question {
       margin-bottom: 14px;
     }
@@ -393,9 +413,9 @@
   <div class="header-inner">
     <div>
       <h1>DermKnowledge</h1>
-      <p>Adaptive New Patient Dermatology Intake</p>
+      <p>Clinical Knowledge Engine — Adaptive New Patient Intake</p>
     </div>
-    <div class="version">Alpha 0.5</div>
+    <div class="version">Alpha 0.6</div>
   </div>
 </header>
 
@@ -452,7 +472,21 @@
   </div>
 </main>
 
+<script src="../../data/clinical-knowledge.js"></script>
 <script>
+  const clinicalKnowledge =
+    window.DERM_KNOWLEDGE_BASE;
+
+  if (!clinicalKnowledge) {
+    alert(
+      "The clinical knowledge library could not be loaded."
+    );
+
+    throw new Error(
+      "DERM_KNOWLEDGE_BASE is unavailable."
+    );
+  }
+
   const complaintDefinitions = [
     {
       number: 1,
@@ -474,454 +508,36 @@
     }
   ];
 
-  const complaintTypes = [
-    ["rash", "Rash / dermatitis"],
-    ["lesion", "New or changing lesion"],
-    ["ak", "Actinic keratosis / rough spots"],
-    ["sk", "Seborrheic keratosis / irritated growth"],
-    ["acne", "Acne"],
-    ["atopic", "Atopic dermatitis / eczema"],
-    ["contact", "Contact dermatitis"],
-    ["psoriasis", "Psoriasis"],
-    ["rosacea", "Rosacea"],
-    ["skin-cancer", "Known or suspected skin cancer"],
-    ["nevus", "Mole / nevus concern"],
-    ["wart", "Wart"],
-    ["fungal", "Fungal infection"],
-    ["hair-loss", "Hair loss"],
-    ["pruritus", "Itching without a clear rash"],
-    ["other", "Other"]
-  ];
+  const complaintTypes =
+    clinicalKnowledge.pathwayOrder.map(
+      function(pathwayKey) {
+        const pathway =
+          clinicalKnowledge.pathways[
+            pathwayKey
+          ];
 
-  const questionBank = {
-    rash: [
-      selectQuestion(
-        "rashSpread",
-        "Is the rash spreading?",
-        ["No", "Slowly", "Rapidly", "Unsure"],
-        {"Rapidly": {points: 2, flag: "Rapidly spreading rash"}}
-      ),
-      checkboxQuestion(
-        "rashSymptoms",
-        "Which symptoms are present?",
-        [
-          ["Itching", 0],
-          ["Pain", 2, "Painful rash"],
-          ["Burning", 1, "Burning"],
-          ["Scaling", 0],
-          ["Blistering", 3, "Blistering"],
-          ["Bleeding", 1, "Bleeding"]
-        ]
-      ),
-      checkboxQuestion(
-        "rashSystemic",
-        "Are any of these present?",
-        [
-          ["Fever", 3, "Fever"],
-          ["Mouth or eye involvement", 4, "Mucosal involvement"],
-          ["Facial swelling", 3, "Facial swelling"],
-          ["Difficulty breathing", 5, "Difficulty breathing"],
-          ["None", 0]
-        ]
-      ),
-      textQuestion(
-        "rashExposure",
-        "New medications, products, illness, travel, or exposures?"
+        return [
+          pathwayKey,
+          pathway.label
+        ];
+      }
+    );
+
+  const questionBank =
+    Object.fromEntries(
+      clinicalKnowledge.pathwayOrder.map(
+        function(pathwayKey) {
+          return [
+            pathwayKey,
+            clinicalKnowledge.pathways[
+              pathwayKey
+            ].questions
+          ];
+        }
       )
-    ],
-
-    lesion: [
-      checkboxQuestion(
-        "lesionChange",
-        "What changes have been noticed?",
-        [
-          ["Rapid growth", 3, "Rapid growth"],
-          ["Larger", 1, "Increasing size"],
-          ["Shape change", 1, "Shape change"],
-          ["Multiple or changing colors", 2, "Color variation"],
-          ["Bleeding", 2, "Bleeding"],
-          ["Non-healing", 2, "Non-healing"],
-          ["Pain", 1, "Pain"],
-          ["Itching", 0]
-        ]
-      ),
-      selectQuestion(
-        "lesionPersonalHistory",
-        "Personal history of melanoma?",
-        ["No", "Yes", "Unsure"],
-        {"Yes": {points: 3, flag: "Personal melanoma history"}}
-      ),
-      selectQuestion(
-        "lesionOtherCancer",
-        "Personal history of another skin cancer?",
-        ["No", "Yes", "Unsure"],
-        {"Yes": {points: 1, flag: "Other skin cancer history"}}
-      ),
-      selectQuestion(
-        "lesionFamilyHistory",
-        "First-degree family history of melanoma?",
-        ["No", "Yes", "Unsure"],
-        {"Yes": {points: 2, flag: "Family melanoma history"}}
-      ),
-      selectQuestion(
-        "lesionImmune",
-        "Immunosuppressed or transplant recipient?",
-        ["No", "Yes", "Unsure"],
-        {"Yes": {points: 2, flag: "Immunosuppression"}}
-      )
-    ],
-
-    "skin-cancer": [
-      checkboxQuestion(
-        "cancerConcern",
-        "Which features are present?",
-        [
-          ["Rapid growth", 3, "Rapid growth"],
-          ["Bleeding", 2, "Bleeding"],
-          ["Non-healing sore", 2, "Non-healing"],
-          ["Pain or tenderness", 1, "Pain or tenderness"],
-          ["Multiple colors", 2, "Color variation"],
-          ["Recurrent after treatment", 2, "Recurrent lesion"]
-        ]
-      ),
-      selectQuestion(
-        "cancerPriorDiagnosis",
-        "Was this area previously biopsied or diagnosed?",
-        ["No", "Yes", "Unsure"],
-        {"Yes": {points: 1, flag: "Prior biopsy or diagnosis"}}
-      ),
-      textQuestion(
-        "cancerPriorResult",
-        "If previously biopsied, what was the result?"
-      )
-    ],
-
-    nevus: [
-      checkboxQuestion(
-        "nevusFeatures",
-        "What concerns you about the mole?",
-        [
-          ["Asymmetry", 1, "Asymmetry"],
-          ["Irregular border", 1, "Irregular border"],
-          ["Multiple colors", 2, "Color variation"],
-          ["Growing or evolving", 2, "Evolution"],
-          ["Bleeding", 2, "Bleeding"],
-          ["Looks different from other moles", 2, "Outlier lesion"]
-        ]
-      ),
-      selectQuestion(
-        "nevusPersonalHistory",
-        "Personal history of melanoma?",
-        ["No", "Yes", "Unsure"],
-        {"Yes": {points: 3, flag: "Personal melanoma history"}}
-      )
-    ],
-
-    ak: [
-      numberQuestion("akCount", "Approximate number of rough spots"),
-      checkboxQuestion(
-        "akSymptoms",
-        "Are the spots symptomatic?",
-        [
-          ["Tender", 1, "Tender"],
-          ["Itching", 0],
-          ["Bleeding", 2, "Bleeding"],
-          ["Thickening rapidly", 2, "Rapid thickening"],
-          ["None", 0]
-        ]
-      ),
-      textQuestion(
-        "akTreatment",
-        "Prior cryotherapy or field treatment?"
-      )
-    ],
-
-    sk: [
-      checkboxQuestion(
-        "skSymptoms",
-        "Why is the growth concerning?",
-        [
-          ["Irritated by clothing", 0],
-          ["Itching", 0],
-          ["Bleeding", 1, "Bleeding"],
-          ["Pain", 1, "Pain"],
-          ["Rapid change", 2, "Rapid change"],
-          ["Unsure of diagnosis", 1, "Diagnostic uncertainty"]
-        ]
-      )
-    ],
-
-    acne: [
-      checkboxQuestion(
-        "acneAreas",
-        "Areas affected",
-        [
-          ["Face", 0],
-          ["Chest", 0],
-          ["Back", 0],
-          ["Shoulders", 0],
-          ["Other", 0]
-        ]
-      ),
-      selectQuestion(
-        "acneSeverity",
-        "Current severity",
-        ["Mild", "Moderate", "Severe", "Unsure"],
-        {"Severe": {points: 1, flag: "Patient reports severe acne"}}
-      ),
-      selectQuestion(
-        "acneScarring",
-        "Is scarring occurring?",
-        ["No", "Yes", "Unsure"],
-        {"Yes": {points: 1, flag: "Scarring"}}
-      ),
-      selectQuestion(
-        "pregnancyStatus",
-        "Pregnant, trying to conceive, or breastfeeding?",
-        ["No", "Yes", "Not applicable", "Prefer not to answer"],
-        {"Yes": {points: 1, flag: "Pregnancy-related treatment consideration"}}
-      ),
-      textQuestion(
-        "acneTreatment",
-        "Treatments already tried"
-      )
-    ],
-
-    psoriasis: [
-      selectQuestion(
-        "psoriasisStatus",
-        "Compared with previously",
-        ["Better", "Same", "Worse", "New problem"],
-        {"Worse": {points: 1, flag: "Worsening"}}
-      ),
-      numberQuestion(
-        "psoriasisItch",
-        "Itch severity from 0 to 10",
-        0,
-        10
-      ),
-      checkboxQuestion(
-        "psoriasisJoint",
-        "Joint-related symptoms",
-        [
-          ["Joint pain", 1, "Joint pain"],
-          ["Joint swelling", 2, "Joint swelling"],
-          ["Morning stiffness", 2, "Morning stiffness"],
-          ["Swollen finger or toe", 2, "Dactylitis-type symptom"],
-          ["None", 0]
-        ]
-      ),
-      selectQuestion(
-        "psoriasisTreatment",
-        "Any missed treatment doses?",
-        ["No", "Yes", "Not applicable"],
-        {"Yes": {points: 0, flag: "Missed treatment doses"}}
-      )
-    ],
-
-    "hair-loss": [
-      selectQuestion(
-        "hairPattern",
-        "Pattern of hair loss",
-        [
-          "Diffuse shedding",
-          "Patchy",
-          "Front or temples",
-          "Scarring concern",
-          "Unsure"
-        ],
-        {"Scarring concern": {points: 2, flag: "Scarring hair-loss concern"}}
-      ),
-      checkboxQuestion(
-        "hairSymptoms",
-        "Scalp symptoms",
-        [
-          ["Itching", 0],
-          ["Burning", 1, "Burning"],
-          ["Pain or tenderness", 1, "Pain or tenderness"],
-          ["Scaling", 0],
-          ["Pustules or drainage", 2, "Pustules or drainage"],
-          ["None", 0]
-        ]
-      ),
-      textQuestion(
-        "hairTrigger",
-        "Recent illness, surgery, stress, weight loss, pregnancy, or medication change?"
-      )
-    ],
-
-    atopic: [
-      selectQuestion(
-        "eczemaStatus",
-        "Compared with previously",
-        ["Better", "Same", "Worse", "New problem"],
-        {"Worse": {points: 1, flag: "Worsening"}}
-      ),
-      checkboxQuestion(
-        "eczemaSymptoms",
-        "Associated symptoms",
-        [
-          ["Itching", 0],
-          ["Sleep disruption", 1, "Sleep disruption"],
-          ["Oozing or crusting", 1, "Oozing or crusting"],
-          ["Pain", 1, "Pain"],
-          ["Fever", 3, "Fever"]
-        ]
-      ),
-      textQuestion(
-        "eczemaTreatment",
-        "Current and prior treatments"
-      )
-    ],
-
-    contact: [
-      textQuestion(
-        "contactExposure",
-        "New products, work exposures, plants, adhesives, metals, or topical medications?"
-      ),
-      selectQuestion(
-        "contactWorkRelated",
-        "Could this be work-related?",
-        ["No", "Yes", "Unsure"],
-        {"Yes": {points: 0, flag: "Possible occupational exposure"}}
-      ),
-      checkboxQuestion(
-        "contactSymptoms",
-        "Symptoms",
-        [
-          ["Itching", 0],
-          ["Burning", 1, "Burning"],
-          ["Blistering", 2, "Blistering"],
-          ["Swelling", 1, "Swelling"]
-        ]
-      )
-    ],
-
-    rosacea: [
-      checkboxQuestion(
-        "rosaceaFeatures",
-        "Current features",
-        [
-          ["Flushing", 0],
-          ["Persistent redness", 0],
-          ["Bumps or pustules", 0],
-          ["Eye irritation", 1, "Eye symptoms"],
-          ["Nasal thickening", 1, "Tissue thickening"]
-        ]
-      ),
-      textQuestion(
-        "rosaceaTriggers",
-        "Known triggers and treatments tried"
-      )
-    ],
-
-    wart: [
-      numberQuestion("wartCount", "Approximate number of warts"),
-      selectQuestion(
-        "wartImmune",
-        "Immunosuppressed or transplant recipient?",
-        ["No", "Yes", "Unsure"],
-        {"Yes": {points: 1, flag: "Immunosuppression"}}
-      ),
-      textQuestion("wartTreatment", "Prior treatments")
-    ],
-
-    fungal: [
-      checkboxQuestion(
-        "fungalSites",
-        "Areas affected",
-        [
-          ["Feet", 0],
-          ["Groin", 0],
-          ["Body", 0],
-          ["Scalp", 1, "Scalp involvement"],
-          ["Nails", 0],
-          ["Other", 0]
-        ]
-      ),
-      selectQuestion(
-        "fungalImmune",
-        "Immunosuppressed or diabetic?",
-        ["No", "Yes", "Unsure"],
-        {"Yes": {points: 1, flag: "Relevant medical risk"}}
-      ),
-      textQuestion("fungalTreatment", "Treatments already tried")
-    ],
-
-    pruritus: [
-      selectQuestion(
-        "itchRash",
-        "Is a rash visible?",
-        ["No", "Yes", "Unsure"]
-      ),
-      selectQuestion(
-        "itchGeneralized",
-        "Is the itching widespread?",
-        ["No", "Yes", "Unsure"],
-        {"Yes": {points: 1, flag: "Generalized pruritus"}}
-      ),
-      checkboxQuestion(
-        "itchSystemic",
-        "Associated symptoms",
-        [
-          ["Fever", 2, "Fever"],
-          ["Weight loss", 1, "Weight loss"],
-          ["Night sweats", 1, "Night sweats"],
-          ["Yellowing of skin or eyes", 2, "Jaundice-type symptom"],
-          ["None", 0]
-        ]
-      ),
-      textQuestion("itchTreatment", "Treatments already tried")
-    ],
-
-    other: [
-      selectQuestion(
-        "generalChange",
-        "Has the condition changed recently?",
-        ["No", "Yes", "Unsure"],
-        {"Yes": {points: 1, flag: "Recent change"}}
-      ),
-      textQuestion(
-        "generalTreatment",
-        "Treatments already tried"
-      )
-    ]
-  };
+    );
 
   let lastStructuredRecord = null;
-
-  function selectQuestion(id, label, options, attentionMap = {}) {
-    return {
-      id,
-      label,
-      type: "select",
-      options,
-      attentionMap
-    };
-  }
-
-  function checkboxQuestion(id, label, options) {
-    return {
-      id,
-      label,
-      type: "checkbox",
-      options: options.map(function(option) {
-        return {
-          label: option[0],
-          points: option[1] || 0,
-          flag: option[2] || ""
-        };
-      })
-    };
-  }
-
-  function textQuestion(id, label) {
-    return {id, label, type: "text"};
-  }
-
-  function numberQuestion(id, label, min = 0, max = null) {
-    return {id, label, type: "number", min, max};
-  }
 
   function renderComplaintCards() {
     const container =
@@ -1029,9 +645,42 @@
       return;
     }
 
+    const pathway =
+      clinicalKnowledge.pathways[type] ||
+      clinicalKnowledge.pathways.other;
+
     const questions =
-      questionBank[type] ||
-      questionBank.other;
+      pathway.questions;
+
+    const moduleDetails =
+      document.createElement("div");
+
+    moduleDetails.className =
+      "knowledge-module";
+
+    const moduleTitle =
+      document.createElement("strong");
+
+    moduleTitle.textContent =
+      pathway.moduleTitle;
+
+    const modulePurpose =
+      document.createElement("p");
+
+    modulePurpose.textContent =
+      pathway.clinicalPurpose;
+
+    moduleDetails.appendChild(
+      moduleTitle
+    );
+
+    moduleDetails.appendChild(
+      modulePurpose
+    );
+
+    container.appendChild(
+      moduleDetails
+    );
 
     questions.forEach(function(question) {
       const wrapper = document.createElement("div");
@@ -1257,8 +906,20 @@
         attentionPoints
       );
 
+    const pathway =
+      clinicalKnowledge.pathways[
+        complaintType
+      ] || clinicalKnowledge.pathways.other;
+
     return {
       complaintNumber,
+      knowledgeModule: {
+        pathwayKey: pathway.key,
+        moduleTitle: pathway.moduleTitle,
+        clinicalPurpose: pathway.clinicalPurpose,
+        knowledgeVersion:
+          clinicalKnowledge.engine.knowledgeVersion
+      },
       complaintLabel:
         complaintDefinitions[
           complaintNumber - 1
@@ -1342,9 +1003,21 @@
 
     lastStructuredRecord = {
       schemaVersion:
-        "dermknowledge-intake-0.5",
+        "dermknowledge-intake-0.6",
       applicationVersion:
-        "Alpha 0.5",
+        "Alpha 0.6",
+      clinicalKnowledgeEngine: {
+        name:
+          clinicalKnowledge.engine.name,
+        engineVersion:
+          clinicalKnowledge.engine.engineVersion,
+        knowledgeVersion:
+          clinicalKnowledge.engine.knowledgeVersion,
+        status:
+          clinicalKnowledge.engine.status,
+        safetyBoundary:
+          clinicalKnowledge.engine.safetyBoundary
+      },
       generatedAt:
         new Date().toISOString(),
       syntheticTestDataOnly:
@@ -1428,6 +1101,16 @@
             <h4>${escapeHtml(complaint.complaintLabel)}</h4>
 
             <div class="summary-row">
+              <span class="summary-label">Knowledge module:</span>
+              ${escapeHtml(complaint.knowledgeModule.moduleTitle)}
+            </div>
+
+            <div class="summary-row">
+              <span class="summary-label">Module purpose:</span>
+              ${escapeHtml(complaint.knowledgeModule.clinicalPurpose)}
+            </div>
+
+            <div class="summary-row">
               <span class="summary-label">Type:</span>
               ${escapeHtml(complaint.complaintTypeLabel)}
             </div>
@@ -1506,7 +1189,7 @@
 
     link.href = url;
     link.download =
-      "dermknowledge-alpha-0.5-test-record.json";
+      "dermknowledge-alpha-0.6-test-record.json";
 
     document.body.appendChild(link);
     link.click();
