@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+  <title>DermKnowledge Alpha 0.7 — Provider Workspace</title>
+
+  <style>
+    :root {
+      --dark-green: #174f46;
+      --green: #1f8278;
+      --light-green: #dcece8;
+      --background: #eef4f2;
+      --white: #ffffff;
+      --text: #22312e;
+      --muted: #64736f;
+      --border: #cbd8d4;
+      --warning-bg: #fff8df;
+      --warning-border: #e6d69a;
+      --danger-bg: #fff0f0;
+      --danger: #8b1e1e;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+      background: var(--background);
+      color: var(--text);
+      line-height: 1.45;
+    }
+
+    header {
+      background: var(--dark-green);
+      color: var(--white);
+      padding: 18px;
+    }
+
+    .header-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    header p {
+      margin: 5px 0 0;
+      opacity: 0.88;
+    }
+
+    .version {
+      border: 1px solid rgba(255,255,255,0.5);
+      border-radius: 20px;
+      padding: 7px 12px;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 24px auto;
+      padding: 0 16px 44px;
+    }
+
+    .card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      padding: 22px;
+      margin-bottom: 18px;
+      box-shadow: 0 5px 18px rgba(23,79,70,0.07);
+    }
+
+    h2,
+    h3,
+    h4 {
+      color: var(--dark-green);
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+
+    .warning {
+      padding: 13px;
+      border: 1px solid var(--warning-border);
+      background: var(--warning-bg);
+      border-radius: 9px;
+      color: #5f4b00;
+      font-size: 13px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    label {
+      display: block;
+      color: var(--dark-green);
+      font-weight: 650;
+      margin-bottom: 15px;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      margin-top: 6px;
+      padding: 12px;
+      border: 1px solid #b8c8c3;
+      border-radius: 9px;
+      font: inherit;
+      color: var(--text);
+      background: var(--white);
+    }
+
+    textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    .complaint {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 15px;
+      margin: 14px 0;
+      background: #fbfdfc;
+    }
+
+    .summary-row {
+      margin: 5px 0;
+    }
+
+    .summary-label {
+      font-weight: 700;
+    }
+
+    .flag {
+      display: inline-block;
+      margin: 8px 0 0;
+      padding: 5px 9px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: bold;
+      background: var(--light-green);
+      color: var(--dark-green);
+    }
+
+    .flag.review {
+      background: var(--warning-bg);
+      color: #8a4b08;
+    }
+
+    .flag.elevated {
+      background: var(--danger-bg);
+      color: var(--danger);
+    }
+
+    .checkbox-row {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      margin: 14px 0;
+      color: var(--text);
+      font-weight: normal;
+    }
+
+    .checkbox-row input {
+      width: auto;
+      margin-top: 4px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    button {
+      border: none;
+      border-radius: 9px;
+      padding: 12px 16px;
+      background: var(--green);
+      color: var(--white);
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: var(--dark-green);
+    }
+
+    .secondary {
+      background: #e5eeeb;
+      color: var(--dark-green);
+      border: 1px solid var(--border);
+    }
+
+    .note-output {
+      white-space: pre-wrap;
+      padding: 15px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      background: #f7f9f8;
+      min-height: 180px;
+    }
+
+    .status {
+      display: none;
+      padding: 12px;
+      margin-top: 14px;
+      border-radius: 9px;
+      background: var(--light-green);
+      color: var(--dark-green);
+    }
+
+    @media (max-width: 700px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .actions {
+        flex-direction: column;
+      }
+
+      button {
+        width: 100%;
+      }
+    }
+
+    @media print {
+      .no-print {
+        display: none !important;
+      }
+
+      body {
+        background: white;
+      }
+
+      .card {
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+<header>
+  <div class="header-inner">
+    <div>
+      <h1>DermKnowledge</h1>
+      <p>Provider Review and Documentation Workspace</p>
+    </div>
+    <div class="version">Alpha 0.7</div>
+  </div>
+</header>
+
+<main>
+  <section class="card">
+    <h2>Provider Workspace</h2>
+    <div class="warning">
+      Prototype only. Patient-entered information remains preliminary
+      until reviewed, corrected, incorporated, and authenticated by the
+      treating clinician. No automated diagnosis, coding, or treatment
+      recommendation is provided in this version.
+    </div>
+  </section>
+
+  <section class="card">
+    <h3>Patient-Entered Structured Intake</h3>
+    <div id="intakeSummary"></div>
+  </section>
+
+  <section class="card">
+    <h3>Clinician Review</h3>
+
+    <div class="grid">
+      <label>
+        Provider name or test initials
+        <input
+          id="providerName"
+          type="text"
+          placeholder="Synthetic test signature only"
+        >
+      </label>
+
+      <label>
+        Encounter date
+        <input id="encounterDate" type="date">
+      </label>
+    </div>
+
+    <label>
+      Objective examination
+      <textarea
+        id="objectiveExam"
+        placeholder="Enter clinician-observed examination findings"
+      ></textarea>
+    </label>
+
+    <label>
+      Assessment / diagnoses
+      <textarea
+        id="assessment"
+        placeholder="Enter provider-confirmed assessment or diagnoses"
+      ></textarea>
+    </label>
+
+    <label>
+      Plan / treatment / diagnostic workup
+      <textarea
+        id="plan"
+        placeholder="Enter treatment, tests, procedures, counseling, and follow-up"
+      ></textarea>
+    </label>
+
+    <div class="grid">
+      <label>
+        ICD-10 codes confirmed by provider
+        <input
+          id="icd10"
+          type="text"
+          placeholder="Example: L57.0"
+        >
+      </label>
+
+      <label>
+        CPT codes confirmed by provider
+        <input
+          id="cpt"
+          type="text"
+          placeholder="Example: 17000"
+        >
+      </label>
+    </div>
+
+    <label class="checkbox-row">
+      <input id="providerAttestation" type="checkbox">
+      <span>
+        I reviewed the patient-entered information, modified it where
+        appropriate, and approve this synthetic test encounter.
+      </span>
+    </label>
+
+    <div class="actions no-print">
+      <button type="button" onclick="generateClinicNote()">
+        Generate Clinic Note
+      </button>
+
+      <button type="button" onclick="saveProviderRecord()">
+        Save Test Record Locally
+      </button>
+
+      <button class="secondary" type="button" onclick="window.print()">
+        Print / Save as PDF
+      </button>
+
+      <button
+        class="secondary"
+        type="button"
+        onclick="window.location.href='../intake/intake.html'"
+      >
+        Return to Intake
+      </button>
+    </div>
+
+    <div id="saveStatus" class="status"></div>
+  </section>
+
+  <section class="card">
+    <h3>Generated Clinic Note</h3>
+    <div id="clinicNote" class="note-output">
+      No clinic note generated yet.
+    </div>
+  </section>
+</main>
+
+<script>
+  let encounterRecord = null;
+
+  function loadEncounter() {
+    const raw =
+      localStorage.getItem(
+        "dermKnowledgeCurrentEncounter"
+      );
+
+    if (!raw) {
+      document.getElementById(
+        "intakeSummary"
+      ).innerHTML =
+        "<p>No structured intake record was found. Return to the intake page and generate the record first.</p>";
+      return;
+    }
+
+    try {
+      encounterRecord =
+        JSON.parse(raw);
+    } catch (error) {
+      document.getElementById(
+        "intakeSummary"
+      ).innerHTML =
+        "<p>The saved intake record could not be read.</p>";
+      return;
+    }
+
+    renderIntakeSummary();
+
+    document.getElementById(
+      "encounterDate"
+    ).value =
+      new Date().toISOString().slice(0, 10);
+  }
+
+  function renderIntakeSummary() {
+    const complaints =
+      encounterRecord.complaints || [];
+
+    document.getElementById(
+      "intakeSummary"
+    ).innerHTML =
+      complaints.map(function(complaint) {
+        const adaptive =
+          Object.entries(
+            complaint.adaptiveResponses || {}
+          ).map(function(entry) {
+            const value =
+              Array.isArray(entry[1])
+                ? entry[1].join(", ")
+                : entry[1];
+
+            return `
+              <div class="summary-row">
+                <span class="summary-label">
+                  ${escapeHtml(humanize(entry[0]))}:
+                </span>
+                ${escapeHtml(String(value))}
+              </div>
+            `;
+          }).join("");
+
+        const points =
+          Number(
+            complaint.prototypeAttention?.points || 0
+          );
+
+        const levelClass =
+          points >= 5
+            ? "elevated"
+            : points >= 2
+              ? "review"
+              : "";
+
+        return `
+          <article class="complaint">
+            <h4>${escapeHtml(complaint.complaintLabel || "Complaint")}</h4>
+
+            <div class="summary-row">
+              <span class="summary-label">Knowledge module:</span>
+              ${escapeHtml(complaint.knowledgeModule?.moduleTitle || "")}
+            </div>
+
+            <div class="summary-row">
+              <span class="summary-label">Type:</span>
+              ${escapeHtml(complaint.complaintTypeLabel || "")}
+            </div>
+
+            <div class="summary-row">
+              <span class="summary-label">Patient wording:</span>
+              ${escapeHtml(
+                complaint.patientDescription ||
+                "Captured through structured responses"
+              )}
+            </div>
+
+            <div class="summary-row">
+              <span class="summary-label">Location:</span>
+              ${escapeHtml(complaint.location || "Not entered")}
+            </div>
+
+            <div class="summary-row">
+              <span class="summary-label">Duration:</span>
+              ${escapeHtml(complaint.duration || "Not entered")}
+            </div>
+
+            <div class="summary-row">
+              <span class="summary-label">Additional symptoms:</span>
+              ${escapeHtml(complaint.symptoms || "Not entered")}
+            </div>
+
+            ${adaptive}
+
+            <span class="flag ${levelClass}">
+              ${escapeHtml(
+                complaint.prototypeAttention?.level ||
+                "No rule-based flag"
+              )}
+            </span>
+          </article>
+        `;
+      }).join("");
+  }
+
+  function generateClinicNote() {
+    if (!encounterRecord) {
+      alert(
+        "No structured intake record is available."
+      );
+      return;
+    }
+
+    const providerName =
+      document.getElementById(
+        "providerName"
+      ).value.trim();
+
+    const encounterDate =
+      document.getElementById(
+        "encounterDate"
+      ).value;
+
+    const objectiveExam =
+      document.getElementById(
+        "objectiveExam"
+      ).value.trim();
+
+    const assessment =
+      document.getElementById(
+        "assessment"
+      ).value.trim();
+
+    const plan =
+      document.getElementById(
+        "plan"
+      ).value.trim();
+
+    const icd10 =
+      document.getElementById(
+        "icd10"
+      ).value.trim();
+
+    const cpt =
+      document.getElementById(
+        "cpt"
+      ).value.trim();
+
+    const complaintText =
+      (encounterRecord.complaints || [])
+        .map(function(complaint) {
+          const responses =
+            Object.entries(
+              complaint.adaptiveResponses || {}
+            ).map(function(entry) {
+              const value =
+                Array.isArray(entry[1])
+                  ? entry[1].join(", ")
+                  : entry[1];
+
+              return (
+                humanize(entry[0]) +
+                ": " +
+                value
+              );
+            }).join("; ");
+
+          return [
+            complaint.complaintLabel,
+            "Type: " +
+              (complaint.complaintTypeLabel || ""),
+            "Patient wording: " +
+              (
+                complaint.patientDescription ||
+                "Captured through structured responses"
+              ),
+            "Location: " +
+              (complaint.location || "Not entered"),
+            "Duration: " +
+              (complaint.duration || "Not entered"),
+            "Additional symptoms: " +
+              (complaint.symptoms || "Not entered"),
+            responses
+              ? "Structured responses: " + responses
+              : ""
+          ].filter(Boolean).join("\n");
+        }).join("\n\n");
+
+    const note = [
+      "DERMKNOWLEDGE ALPHA 0.7 — SYNTHETIC TEST NOTE",
+      "",
+      "Encounter date: " + (encounterDate || "Not entered"),
+      "Provider: " + (providerName || "Not entered"),
+      "",
+      "PATIENT-ENTERED HISTORY",
+      complaintText || "No complaints available.",
+      "",
+      "OBJECTIVE EXAMINATION",
+      objectiveExam || "Not entered.",
+      "",
+      "ASSESSMENT / DIAGNOSES",
+      assessment || "Not entered.",
+      "",
+      "PLAN / TREATMENT / DIAGNOSTIC WORKUP",
+      plan || "Not entered.",
+      "",
+      "ICD-10 CODES CONFIRMED BY PROVIDER",
+      icd10 || "Not entered.",
+      "",
+      "CPT CODES CONFIRMED BY PROVIDER",
+      cpt || "Not entered.",
+      "",
+      "Provider attestation: " +
+        (
+          document.getElementById(
+            "providerAttestation"
+          ).checked
+            ? "Completed"
+            : "Not completed"
+        )
+    ].join("\n");
+
+    document.getElementById(
+      "clinicNote"
+    ).textContent = note;
+  }
+
+  function saveProviderRecord() {
+    if (!encounterRecord) {
+      alert(
+        "No structured intake record is available."
+      );
+      return;
+    }
+
+    if (
+      !document.getElementById(
+        "providerAttestation"
+      ).checked
+    ) {
+      alert(
+        "Provider attestation is required before saving this test record."
+      );
+      return;
+    }
+
+    const providerRecord = {
+      ...encounterRecord,
+      providerReview: {
+        providerName:
+          document.getElementById(
+            "providerName"
+          ).value.trim(),
+        encounterDate:
+          document.getElementById(
+            "encounterDate"
+          ).value,
+        objectiveExam:
+          document.getElementById(
+            "objectiveExam"
+          ).value.trim(),
+        assessment:
+          document.getElementById(
+            "assessment"
+          ).value.trim(),
+        plan:
+          document.getElementById(
+            "plan"
+          ).value.trim(),
+        icd10:
+          document.getElementById(
+            "icd10"
+          ).value.trim(),
+        cpt:
+          document.getElementById(
+            "cpt"
+          ).value.trim(),
+        attested: true,
+        attestedAt:
+          new Date().toISOString()
+      }
+    };
+
+    localStorage.setItem(
+      "dermKnowledgeProviderReviewedEncounter",
+      JSON.stringify(providerRecord)
+    );
+
+    const status =
+      document.getElementById(
+        "saveStatus"
+      );
+
+    status.style.display = "block";
+    status.textContent =
+      "Synthetic provider-reviewed record saved locally at " +
+      new Date().toLocaleString() +
+      ".";
+  }
+
+  function humanize(value) {
+    return String(value)
+      .replace(/([a-z])([A-Z])/g, "$1 $2")
+      .replace(/[-_]/g, " ")
+      .replace(/\b\w/g, function(letter) {
+        return letter.toUpperCase();
+      });
+  }
+
+  function escapeHtml(value) {
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  loadEncounter();
+</script>
+</body>
+</html>

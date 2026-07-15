@@ -1,21 +1,27 @@
-# DermKnowledge Alpha 0.6.1
+# DermKnowledge Alpha 0.7 — Provider Workspace
 
-## Fixed
-- Landing page now displays the current Alpha 0.6.1 version.
-- Complaint #1 no longer requires duplicative free-text wording when structured adaptive responses already document the concern.
-- Complaint #1 is accepted when at least one of the following is present:
-  - adaptive response,
-  - patient free text,
-  - location,
-  - duration,
-  - additional symptoms.
-- Provider summary displays “Captured through structured responses” when the free-text field is intentionally blank.
+## Added
+- New `modules/provider/provider.html`.
+- Patient-entered structured intake transferred to the provider workspace through browser storage.
+- Provider review fields:
+  - objective examination,
+  - assessment / diagnoses,
+  - plan / treatment / diagnostic workup,
+  - provider-confirmed ICD-10 codes,
+  - provider-confirmed CPT codes.
+- Provider attestation with timestamp.
+- Generated synthetic clinic note.
+- Local prototype storage of provider-reviewed encounter.
+- Print / Save as PDF support.
 
 ## Preserved
-- Clinical Knowledge Engine architecture.
 - Disclosure acknowledgment.
+- Clinical Knowledge Engine.
 - Three prioritized complaints.
-- Structured provider summary.
-- JSON export.
-- Voice entry.
+- Adaptive questioning.
 - Transparent prototype attention flags.
+- Voice entry.
+- JSON export.
+
+## Safety boundary
+No automated diagnosis, coding, treatment recommendation, or validated triage is performed.

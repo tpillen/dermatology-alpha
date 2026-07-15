@@ -1,30 +1,34 @@
-DermKnowledge Alpha 0.6.1 — Complete Project Replacement
+DermKnowledge Alpha 0.7 — Complete Project Replacement
 
 PURPOSE
-This hotfix corrects the landing-page version label and removes the unnecessary hard stop requiring free-text wording when Complaint #1 has already been documented through structured adaptive responses.
+Alpha 0.7 adds the Provider Review and Documentation Workspace.
 
 INSTALLATION
-1. Download and unzip DermKnowledge_Alpha_0_6_1_Complete_Project.zip.
+1. Download and unzip DermKnowledge_Alpha_0_7_Complete_Project.zip.
 2. Open the extracted folder.
 3. Copy the complete contents into:
    C:\Users\tpill\OneDrive\Documents\GitHub\dermatology-alpha
 4. Choose "Replace the files in the destination."
-5. Open GitHub Desktop.
-6. Commit:
-   Fix Alpha 0.6 version display and Complaint #1 validation
-7. Push origin.
-8. Test:
+5. Confirm the new provider folder is present:
+   C:\Users\tpill\OneDrive\Documents\GitHub\dermatology-alpha\modules\provider
+6. Open GitHub Desktop.
+7. Commit:
+   Add Alpha 0.7 provider workspace
+8. Push origin.
+9. Test:
    https://tpillen.github.io/dermatology-alpha/
 
 TESTING
-- Landing page displays Alpha 0.6.1.
-- Start New Patient opens disclosure.
-- Intake loads the Clinical Knowledge Engine.
-- Select a type for Complaint #1.
-- Complete one or more structured adaptive responses.
-- Leave the free-text primary concern box blank.
-- Review Structured Intake should now proceed.
-- Provider summary should state that patient wording was captured through structured responses.
-- JSON and voice entry should still work.
+- Landing page shows Alpha 0.7.
+- Disclosure workflow still works.
+- Complete a synthetic intake and choose Review Structured Intake.
+- Click Open Provider Workspace.
+- Confirm patient-entered complaints load.
+- Enter synthetic objective examination, assessment, plan, ICD-10, and CPT text.
+- Generate Clinic Note.
+- Complete provider attestation.
+- Save Test Record Locally.
+- Print / Save as PDF.
 
-Use synthetic test data only.
+SAFETY
+Use synthetic data only. Alpha 0.7 does not provide automated diagnoses, code selection, treatment recommendations, or validated triage.

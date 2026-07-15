@@ -6,7 +6,7 @@
     name="viewport"
     content="width=device-width, initial-scale=1"
   >
-  <title>DermKnowledge Alpha 0.6.1 — Clinical Knowledge Engine</title>
+  <title>DermKnowledge Alpha 0.7 — Clinical Knowledge Engine</title>
 
   <style>
     :root {
@@ -415,7 +415,7 @@
       <h1>DermKnowledge</h1>
       <p>Clinical Knowledge Engine — Adaptive New Patient Intake</p>
     </div>
-    <div class="version">Alpha 0.6.1</div>
+    <div class="version">Alpha 0.7</div>
   </div>
 </header>
 
@@ -457,6 +457,9 @@
     <pre id="jsonOutput">{}</pre>
 
     <div class="actions">
+      <button type="button" onclick="openProviderWorkspace()">
+        Open Provider Workspace
+      </button>
       <button type="button" onclick="downloadJSON()">
         Download JSON
       </button>
@@ -1044,9 +1047,9 @@
 
     lastStructuredRecord = {
       schemaVersion:
-        "dermknowledge-intake-0.6.1",
+        "dermknowledge-intake-0.7",
       applicationVersion:
-        "Alpha 0.6.1",
+        "Alpha 0.7",
       clinicalKnowledgeEngine: {
         name:
           clinicalKnowledge.engine.name,
@@ -1073,6 +1076,11 @@
       },
       complaints
     };
+
+    localStorage.setItem(
+      "dermKnowledgeCurrentEncounter",
+      JSON.stringify(lastStructuredRecord)
+    );
 
     renderProviderSummary(
       complaints
@@ -1200,6 +1208,23 @@
       }).join("");
   }
 
+  function openProviderWorkspace() {
+    if (!lastStructuredRecord) {
+      alert(
+        "Generate the structured intake record first."
+      );
+      return;
+    }
+
+    localStorage.setItem(
+      "dermKnowledgeCurrentEncounter",
+      JSON.stringify(lastStructuredRecord)
+    );
+
+    window.location.href =
+      "../provider/provider.html";
+  }
+
   function downloadJSON() {
     if (!lastStructuredRecord) {
       alert(
@@ -1230,7 +1255,7 @@
 
     link.href = url;
     link.download =
-      "dermknowledge-alpha-0.6.1-test-record.json";
+      "dermknowledge-alpha-0.7-test-record.json";
 
     document.body.appendChild(link);
     link.click();
