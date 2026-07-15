@@ -1,33 +1,30 @@
-DermKnowledge Alpha 0.6 — Complete Project Replacement
+DermKnowledge Alpha 0.6.1 — Complete Project Replacement
 
 PURPOSE
-Alpha 0.6 separates the clinical knowledge library from the intake user interface.
+This hotfix corrects the landing-page version label and removes the unnecessary hard stop requiring free-text wording when Complaint #1 has already been documented through structured adaptive responses.
 
 INSTALLATION
-1. Download and unzip DermKnowledge_Alpha_0_6_Complete_Project.zip.
-2. Open the extracted DermKnowledge_Alpha_0_6_Complete_Project folder.
+1. Download and unzip DermKnowledge_Alpha_0_6_1_Complete_Project.zip.
+2. Open the extracted folder.
 3. Copy the complete contents into:
    C:\Users\tpill\OneDrive\Documents\GitHub\dermatology-alpha
-4. Choose "Replace the files in the destination" when Windows asks.
-5. Be sure the new data folder is copied:
-   C:\Users\tpill\OneDrive\Documents\GitHub\dermatology-alpha\data
-6. Open GitHub Desktop.
-7. Confirm that data\clinical-knowledge.js and the updated HTML files are detected.
-8. Commit:
-   Add Alpha 0.6 clinical knowledge engine
-9. Push origin.
-10. Test:
-    https://tpillen.github.io/dermatology-alpha/
+4. Choose "Replace the files in the destination."
+5. Open GitHub Desktop.
+6. Commit:
+   Fix Alpha 0.6 version display and Complaint #1 validation
+7. Push origin.
+8. Test:
+   https://tpillen.github.io/dermatology-alpha/
 
 TESTING
-- Landing page shows Alpha 0.6.
+- Landing page displays Alpha 0.6.1.
 - Start New Patient opens disclosure.
-- All acknowledgments are required.
-- Intake loads without a knowledge-library error.
-- Each complaint type displays its module title, purpose, and adaptive questions.
-- Review Structured Intake includes the knowledge module in the provider summary.
-- JSON includes clinicalKnowledgeEngine metadata and knowledgeModule data.
-- Voice Entry is tested on the public HTTPS site.
+- Intake loads the Clinical Knowledge Engine.
+- Select a type for Complaint #1.
+- Complete one or more structured adaptive responses.
+- Leave the free-text primary concern box blank.
+- Review Structured Intake should now proceed.
+- Provider summary should state that patient wording was captured through structured responses.
+- JSON and voice entry should still work.
 
-SAFETY
-Use synthetic test data only. The pathways and attention flags are unvalidated prototype logic.
+Use synthetic test data only.

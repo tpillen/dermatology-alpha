@@ -6,7 +6,7 @@
     name="viewport"
     content="width=device-width, initial-scale=1"
   >
-  <title>DermKnowledge Alpha 0.6 — Clinical Knowledge Engine</title>
+  <title>DermKnowledge Alpha 0.6.1 — Clinical Knowledge Engine</title>
 
   <style>
     :root {
@@ -415,7 +415,7 @@
       <h1>DermKnowledge</h1>
       <p>Clinical Knowledge Engine — Adaptive New Patient Intake</p>
     </div>
-    <div class="version">Alpha 0.6</div>
+    <div class="version">Alpha 0.6.1</div>
   </div>
 </header>
 
@@ -982,9 +982,50 @@
       return;
     }
 
-    if (!complaint1) {
+    const complaint1Container =
+      document.getElementById(
+        "adaptiveQuestions1"
+      );
+
+    const hasAdaptiveResponse =
+      Array.from(
+        complaint1Container.querySelectorAll(
+          "select, input[type='text'], input[type='number']"
+        )
+      ).some(function(element) {
+        return String(element.value || "").trim() !== "";
+      }) ||
+      complaint1Container.querySelector(
+        "input[type='checkbox']:checked"
+      ) !== null;
+
+    const location1 =
+      document.getElementById(
+        "location1"
+      ).value.trim();
+
+    const duration1 =
+      document.getElementById(
+        "duration1"
+      ).value.trim();
+
+    const symptoms1 =
+      document.getElementById(
+        "symptoms1"
+      ).value.trim();
+
+    const hasComplaintDetail =
+      Boolean(
+        complaint1 ||
+        location1 ||
+        duration1 ||
+        symptoms1 ||
+        hasAdaptiveResponse
+      );
+
+    if (!hasComplaintDetail) {
       alert(
-        "Most Concerning Complaint #1 is required."
+        "Please complete at least one detail for Most Concerning Complaint #1."
       );
       return;
     }
@@ -1003,9 +1044,9 @@
 
     lastStructuredRecord = {
       schemaVersion:
-        "dermknowledge-intake-0.6",
+        "dermknowledge-intake-0.6.1",
       applicationVersion:
-        "Alpha 0.6",
+        "Alpha 0.6.1",
       clinicalKnowledgeEngine: {
         name:
           clinicalKnowledge.engine.name,
@@ -1117,7 +1158,7 @@
 
             <div class="summary-row">
               <span class="summary-label">Patient wording:</span>
-              ${escapeHtml(complaint.patientDescription || "Not entered")}
+              ${escapeHtml(complaint.patientDescription || "Captured through structured responses")}
             </div>
 
             <div class="summary-row">
@@ -1189,7 +1230,7 @@
 
     link.href = url;
     link.download =
-      "dermknowledge-alpha-0.6-test-record.json";
+      "dermknowledge-alpha-0.6.1-test-record.json";
 
     document.body.appendChild(link);
     link.click();

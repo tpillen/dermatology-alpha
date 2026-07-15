@@ -1,31 +1,21 @@
-# DermKnowledge Alpha 0.6 — Clinical Knowledge Engine
+# DermKnowledge Alpha 0.6.1
 
-## Architectural change
-Clinical knowledge is now separated from the intake user interface.
-
-## New file
-- `data/clinical-knowledge.js`
-
-## Added
-- Versioned clinical knowledge engine metadata.
-- Centralized pathway order and labels.
-- Centralized question definitions.
-- Module title and clinical-purpose statement for every complaint pathway.
-- Knowledge-engine metadata in structured JSON.
-- Knowledge-module provenance in each complaint record.
-- Provider summary identifies the clinical knowledge module used.
-- Explicit safety boundary embedded in the engine metadata.
+## Fixed
+- Landing page now displays the current Alpha 0.6.1 version.
+- Complaint #1 no longer requires duplicative free-text wording when structured adaptive responses already document the concern.
+- Complaint #1 is accepted when at least one of the following is present:
+  - adaptive response,
+  - patient free text,
+  - location,
+  - duration,
+  - additional symptoms.
+- Provider summary displays “Captured through structured responses” when the free-text field is intentionally blank.
 
 ## Preserved
-- Disclosure acknowledgment workflow.
-- Direct intake-route protection.
+- Clinical Knowledge Engine architecture.
+- Disclosure acknowledgment.
 - Three prioritized complaints.
-- Adaptive questions.
-- Transparent prototype attention flags.
+- Structured provider summary.
+- JSON export.
 - Voice entry.
-- Provider summary.
-- JSON download.
-- Print / Save as PDF.
-
-## Validation status
-Prototype only. Clinical pathways and rules require formal expert review, testing, and governance before clinical deployment.
+- Transparent prototype attention flags.
