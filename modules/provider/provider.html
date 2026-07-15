@@ -6,7 +6,7 @@
     name="viewport"
     content="width=device-width, initial-scale=1"
   >
-  <title>DermKnowledge Alpha 0.8 — Provider Workspace</title>
+  <title>DermKnowledge Alpha 0.9 — Provider Workspace</title>
 
   <style>
     :root {
@@ -63,7 +63,7 @@
 
     header p {
       margin: 5px 0 0;
-      opacity: 0.88;
+      opacity: 0.98;
     }
 
     .version {
@@ -272,7 +272,7 @@
       <h1>DermKnowledge</h1>
       <p>Provider Review and Documentation Workspace</p>
     </div>
-    <div class="version">Alpha 0.8</div>
+    <div class="version">Alpha 0.9</div>
   </div>
 </header>
 
@@ -433,92 +433,28 @@
   }
 
   function renderIntakeSummary() {
-    const complaints =
-      encounterRecord.complaints || [];
-
-    document.getElementById(
-      "intakeSummary"
-    ).innerHTML =
-      complaints.map(function(complaint) {
-        const adaptive =
-          Object.entries(
-            complaint.adaptiveResponses || {}
-          ).map(function(entry) {
-            const value =
-              Array.isArray(entry[1])
-                ? entry[1].join(", ")
-                : entry[1];
-
-            return `
-              <div class="summary-row">
-                <span class="summary-label">
-                  ${escapeHtml(humanize(entry[0]))}:
-                </span>
-                ${escapeHtml(String(value))}
-              </div>
-            `;
-          }).join("");
-
-        const points =
-          Number(
-            complaint.prototypeAttention?.points || 0
-          );
-
-        const levelClass =
-          points >= 5
-            ? "elevated"
-            : points >= 2
-              ? "review"
-              : "";
-
-        return `
-          <article class="complaint">
-            <h4>${escapeHtml(complaint.complaintLabel || "Complaint")}</h4>
-
-            <div class="summary-row">
-              <span class="summary-label">Knowledge module:</span>
-              ${escapeHtml(complaint.knowledgeModule?.moduleTitle || "")}
-            </div>
-
-            <div class="summary-row">
-              <span class="summary-label">Type:</span>
-              ${escapeHtml(complaint.complaintTypeLabel || "")}
-            </div>
-
-            <div class="summary-row">
-              <span class="summary-label">Patient wording:</span>
-              ${escapeHtml(
-                complaint.patientDescription ||
-                "Captured through structured responses and comments"
-              )}
-            </div>
-
-            <div class="summary-row">
-              <span class="summary-label">Location:</span>
-              ${escapeHtml(complaint.location || "Not entered")}
-            </div>
-
-            <div class="summary-row">
-              <span class="summary-label">Duration:</span>
-              ${escapeHtml(complaint.duration || "Not entered")}
-            </div>
-
-            <div class="summary-row">
-              <span class="summary-label">Additional symptoms:</span>
-              ${escapeHtml(complaint.symptoms || "Not entered")}
-            </div>
-
-            ${adaptive}
-
-            <span class="flag ${levelClass}">
-              ${escapeHtml(
-                complaint.prototypeAttention?.level ||
-                "No rule-based flag"
-              )}
-            </span>
-          </article>
-        `;
+    if (encounterRecord.encounterType === "established-patient") {
+      const concerns = encounterRecord.concerns || [];
+      document.getElementById("intakeSummary").innerHTML = concerns.map(function(c) {
+        return `<article class="complaint"><h4>${escapeHtml(c.concernLabel || "Follow-Up Concern")}</h4>${providerRow("Encounter type", "Established patient")}${providerRow("Problem type", c.problemType)}${providerRow("Prior diagnosis / working diagnosis", c.diagnosis)}${providerRow("Status since last visit", c.statusSinceLastVisit)}${providerRow("Current treatment", c.currentTreatment)}${providerRow("Adherence", c.adherence)}${providerRow("Treatment benefit", c.treatmentBenefit)}${providerRow("Side-effect status", c.sideEffectStatus)}${providerRow("Side effects / intolerance", c.sideEffects)}${providerRow("New symptoms or changes", c.newSymptomsOrChanges)}${providerRow("Patient visit goal", c.patientVisitGoal)}${providerRow("Additional comments", c.additionalComments)}</article>`;
       }).join("");
+      return;
+    }
+
+    const complaints = encounterRecord.complaints || [];
+    document.getElementById("intakeSummary").innerHTML = complaints.map(function(complaint) {
+      const adaptive = Object.entries(complaint.adaptiveResponses || {}).map(function(entry) {
+        const value = Array.isArray(entry[1]) ? entry[1].join(", ") : entry[1];
+        return `<div class="summary-row"><span class="summary-label">${escapeHtml(humanize(entry[0]))}:</span> ${escapeHtml(String(value))}</div>`;
+      }).join("");
+      const points = Number(complaint.prototypeAttention?.points || 0);
+      const levelClass = points >= 5 ? "elevated" : points >= 2 ? "review" : "";
+      return `<article class="complaint"><h4>${escapeHtml(complaint.complaintLabel || "Complaint")}</h4><div class="summary-row"><span class="summary-label">Encounter type:</span> New patient</div><div class="summary-row"><span class="summary-label">Knowledge module:</span> ${escapeHtml(complaint.knowledgeModule?.moduleTitle || "")}</div><div class="summary-row"><span class="summary-label">Type:</span> ${escapeHtml(complaint.complaintTypeLabel || "")}</div><div class="summary-row"><span class="summary-label">Patient wording:</span> ${escapeHtml(complaint.patientDescription || "Captured through structured responses and comments")}</div><div class="summary-row"><span class="summary-label">Location:</span> ${escapeHtml(complaint.location || "Not entered")}</div><div class="summary-row"><span class="summary-label">Duration:</span> ${escapeHtml(complaint.duration || "Not entered")}</div><div class="summary-row"><span class="summary-label">Additional symptoms:</span> ${escapeHtml(complaint.symptoms || "Not entered")}</div>${adaptive}<span class="flag ${levelClass}">${escapeHtml(complaint.prototypeAttention?.level || "No rule-based flag")}</span></article>`;
+    }).join("");
+  }
+
+  function providerRow(label, value) {
+    return `<div class="summary-row"><span class="summary-label">${escapeHtml(label)}:</span> ${escapeHtml(value || "Not entered")}</div>`;
   }
 
   function generateClinicNote() {
@@ -565,47 +501,20 @@
       ).value.trim();
 
     const complaintText =
-      (encounterRecord.complaints || [])
-        .map(function(complaint) {
-          const responses =
-            Object.entries(
-              complaint.adaptiveResponses || {}
-            ).map(function(entry) {
-              const value =
-                Array.isArray(entry[1])
-                  ? entry[1].join(", ")
-                  : entry[1];
-
-              return (
-                humanize(entry[0]) +
-                ": " +
-                value
-              );
+      encounterRecord.encounterType === "established-patient"
+        ? (encounterRecord.concerns || []).map(function(c) {
+            return [c.concernLabel, "Problem type: " + (c.problemType || "Not entered"), "Prior diagnosis / working diagnosis: " + (c.diagnosis || "Not entered"), "Status since last visit: " + (c.statusSinceLastVisit || "Not entered"), "Current treatment: " + (c.currentTreatment || "Not entered"), "Adherence: " + (c.adherence || "Not entered"), "Treatment benefit: " + (c.treatmentBenefit || "Not entered"), "Side effects / intolerance: " + (c.sideEffects || "Not entered"), "New symptoms or changes: " + (c.newSymptomsOrChanges || "Not entered"), "Patient visit goal: " + (c.patientVisitGoal || "Not entered"), "Additional comments: " + (c.additionalComments || "Not entered")].join("\n");
+          }).join("\n\n")
+        : (encounterRecord.complaints || []).map(function(complaint) {
+            const responses = Object.entries(complaint.adaptiveResponses || {}).map(function(entry) {
+              const value = Array.isArray(entry[1]) ? entry[1].join(", ") : entry[1];
+              return humanize(entry[0]) + ": " + value;
             }).join("; ");
-
-          return [
-            complaint.complaintLabel,
-            "Type: " +
-              (complaint.complaintTypeLabel || ""),
-            "Patient wording: " +
-              (
-                complaint.patientDescription ||
-                "Captured through structured responses and comments"
-              ),
-            "Location: " +
-              (complaint.location || "Not entered"),
-            "Duration: " +
-              (complaint.duration || "Not entered"),
-            "Additional symptoms: " +
-              (complaint.symptoms || "Not entered"),
-            responses
-              ? "Structured responses: " + responses
-              : ""
-          ].filter(Boolean).join("\n");
-        }).join("\n\n");
+            return [complaint.complaintLabel, "Type: " + (complaint.complaintTypeLabel || ""), "Patient wording: " + (complaint.patientDescription || "Captured through structured responses and comments"), "Location: " + (complaint.location || "Not entered"), "Duration: " + (complaint.duration || "Not entered"), "Additional symptoms: " + (complaint.symptoms || "Not entered"), responses ? "Structured responses: " + responses : ""].filter(Boolean).join("\n");
+          }).join("\n\n");
 
     const note = [
-      "DERMKNOWLEDGE ALPHA 0.8 — SYNTHETIC TEST NOTE",
+      "DERMKNOWLEDGE ALPHA 0.9 — SYNTHETIC TEST NOTE",
       "",
       "Encounter date: " + (encounterDate || "Not entered"),
       "Provider: " + (providerName || "Not entered"),

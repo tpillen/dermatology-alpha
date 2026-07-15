@@ -1,31 +1,13 @@
-DermKnowledge Alpha 0.8 — Complete Project Replacement
+DermKnowledge Alpha 0.9 — Complete Project Replacement
 
-PURPOSE
-Alpha 0.8 adds a progressive complaint workflow and removes redundant free-text concern prompts.
-
-INSTALLATION
-1. Download and unzip DermKnowledge_Alpha_0_8_Complete_Project.zip.
-2. Open the extracted folder.
-3. Copy the complete contents into:
+1. Download and unzip the package.
+2. Copy the complete contents into:
    C:\Users\tpill\OneDrive\Documents\GitHub\dermatology-alpha
-4. Choose "Replace the files in the destination."
+3. Choose “Replace the files in the destination.”
+4. Confirm modules\followup\followup.html exists.
 5. Open GitHub Desktop.
-6. Commit:
-   Add Alpha 0.8 progressive complaint workflow
+6. Commit: Add Alpha 0.9 established patient follow-up workflow
 7. Push origin.
-8. Test:
-   https://tpillen.github.io/dermatology-alpha/
-
-TESTING
-- Complaint #1 is visible initially.
-- Complaint #2 and #3 are hidden initially.
-- After Complaint #1, choose Yes to reveal Complaint #2.
-- Choose No to keep Complaint #2 and #3 hidden.
-- After Complaint #2, choose Yes to reveal Complaint #3.
-- The three-concern limit notice is visible.
-- The label reads “Describe additional symptoms/concerns.”
-- Review Structured Intake works with one, two, or three complaints.
-- Provider Workspace receives only opened and completed complaint modules.
-- JSON export and voice entry continue to work.
+8. Test both New Patient and Established Patient pathways.
 
 Use synthetic test data only.

@@ -1,21 +1,22 @@
-# DermKnowledge Alpha 0.8 — Progressive Complaint Workflow
-
-## Changed
-- Removed redundant free-text prompts asking the patient to restate the concern.
-- Complaint type, adaptive questions, location, duration, and comments now define the concern.
-- Renamed the comment field to “Describe additional symptoms/concerns.”
+# DermKnowledge Alpha 0.9 — Established Patient Follow-Up Workflow
 
 ## Added
-- Complaint #1 is shown initially.
-- Complaint #2 opens only when the patient reports another concern.
-- Complaint #3 opens only when the patient reports one more concern.
-- The patient is advised that the workflow addresses no more than three prioritized concerns.
-- Hidden complaint modules are excluded from the provider summary and JSON.
+- Functional Established Patient pathway.
+- Progressive one-, two-, or three-concern follow-up workflow.
+- Existing problem versus new complaint.
+- Prior diagnosis or working diagnosis.
+- Status since last visit.
+- Current treatment, adherence, benefit, and adverse effects.
+- New symptoms or changes.
+- Patient visit goal.
+- Structured follow-up JSON with `encounterType: established-patient`.
+- Provider Workspace support for new and established encounters.
 
 ## Preserved
+- New Patient workflow.
+- Disclosure.
 - Clinical Knowledge Engine.
-- Disclosure workflow.
 - Provider Workspace.
-- JSON export.
-- Voice entry.
-- Transparent prototype attention flags.
+- Voice entry and JSON export.
+
+Prototype only. Use synthetic data.

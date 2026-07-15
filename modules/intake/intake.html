@@ -6,7 +6,7 @@
     name="viewport"
     content="width=device-width, initial-scale=1"
   >
-  <title>DermKnowledge Alpha 0.8 — Clinical Knowledge Engine</title>
+  <title>DermKnowledge Alpha 0.9 — Clinical Knowledge Engine</title>
 
   <style>
     :root {
@@ -63,7 +63,7 @@
 
     header p {
       margin: 5px 0 0;
-      opacity: 0.88;
+      opacity: 0.98;
     }
 
     .version {
@@ -454,7 +454,7 @@
       <h1>DermKnowledge</h1>
       <p>Clinical Knowledge Engine — Adaptive New Patient Intake</p>
     </div>
-    <div class="version">Alpha 0.8</div>
+    <div class="version">Alpha 0.9</div>
   </div>
 </header>
 
@@ -1258,9 +1258,11 @@
 
     lastStructuredRecord = {
       schemaVersion:
-        "dermknowledge-intake-0.8",
+        "dermknowledge-intake-0.9",
+      encounterType:
+        "new-patient",
       applicationVersion:
-        "Alpha 0.8",
+        "Alpha 0.9",
       clinicalKnowledgeEngine: {
         name:
           clinicalKnowledge.engine.name,
@@ -1466,7 +1468,7 @@
 
     link.href = url;
     link.download =
-      "dermknowledge-alpha-0.8-test-record.json";
+      "dermknowledge-alpha-0.9-test-record.json";
 
     document.body.appendChild(link);
     link.click();
