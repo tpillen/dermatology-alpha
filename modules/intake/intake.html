@@ -6,7 +6,7 @@
     name="viewport"
     content="width=device-width, initial-scale=1"
   >
-  <title>DermKnowledge Alpha 0.9 — Clinical Knowledge Engine</title>
+  <title>DermKnowledge Alpha 1.0 — Clinical Knowledge Engine</title>
 
   <style>
     :root {
@@ -63,7 +63,7 @@
 
     header p {
       margin: 5px 0 0;
-      opacity: 0.98;
+      opacity: 1.08;
     }
 
     .version {
@@ -454,7 +454,7 @@
       <h1>DermKnowledge</h1>
       <p>Clinical Knowledge Engine — Adaptive New Patient Intake</p>
     </div>
-    <div class="version">Alpha 0.9</div>
+    <div class="version">Alpha 1.0</div>
   </div>
 </header>
 
@@ -570,6 +570,19 @@
 
 <script src="../../data/clinical-knowledge.js"></script>
 <script>
+  const currentPatient =
+    JSON.parse(
+      localStorage.getItem(
+        "dermKnowledgeCurrentPatient"
+      ) || "{}"
+    );
+
+  if (!currentPatient.patientId) {
+    window.location.replace(
+      "../patient/patient.html?mode=new"
+    );
+  }
+
   const clinicalKnowledge =
     window.DERM_KNOWLEDGE_BASE;
 
@@ -1258,11 +1271,11 @@
 
     lastStructuredRecord = {
       schemaVersion:
-        "dermknowledge-intake-0.9",
+        "dermknowledge-intake-1.0",
       encounterType:
         "new-patient",
       applicationVersion:
-        "Alpha 0.9",
+        "Alpha 1.0",
       clinicalKnowledgeEngine: {
         name:
           clinicalKnowledge.engine.name,
@@ -1279,6 +1292,12 @@
         new Date().toISOString(),
       syntheticTestDataOnly:
         true,
+      patientContext: {
+        patientId: currentPatient.patientId,
+        patientLabel: currentPatient.patientLabel,
+        birthYear: currentPatient.birthYear || null,
+        sexAtBirth: currentPatient.sexAtBirth || null
+      },
       disclosureAcknowledgment: {
         acknowledged:
           disclosure.acknowledged === true,
@@ -1468,7 +1487,7 @@
 
     link.href = url;
     link.download =
-      "dermknowledge-alpha-0.9-test-record.json";
+      "dermknowledge-alpha-1.0-test-record.json";
 
     document.body.appendChild(link);
     link.click();

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DermKnowledge Alpha 1.0 — Synthetic Patient Context</title>
+<style>
+:root{--dark:#174f46;--green:#1f8278;--light:#dcece8;--bg:#eef4f2;--white:#fff;--text:#22312e;--muted:#64736f;--border:#cbd8d4;--warn:#fff8df}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.45}
+header{background:var(--dark);color:#fff;padding:18px}.head{max-width:900px;margin:auto;display:flex;justify-content:space-between;gap:18px;align-items:center}
+h1{margin:0;font-size:24px}header p{margin:5px 0 0;opacity:.88}.version{border:1px solid #ffffff80;border-radius:20px;padding:7px 12px;font-weight:bold}
+main{max-width:900px;margin:24px auto;padding:0 16px 44px}.card{background:#fff;border:1px solid var(--border);border-radius:15px;padding:24px;box-shadow:0 5px 18px #174f4612}
+h2{color:var(--dark)}label{display:block;color:var(--dark);font-weight:650;margin-bottom:15px}input,select{width:100%;margin-top:6px;padding:12px;border:1px solid #b8c8c3;border-radius:9px;font:inherit}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.warning{padding:13px;background:var(--warn);border:1px solid #e6d69a;border-radius:9px;color:#5f4b00;font-size:13px;margin-bottom:18px}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:20px}button{border:0;border-radius:9px;padding:12px 16px;background:var(--green);color:#fff;font-weight:bold;font-size:15px;cursor:pointer}
+.secondary{background:#e5eeeb;color:var(--dark);border:1px solid var(--border)}
+@media(max-width:650px){.grid{grid-template-columns:1fr}.actions{flex-direction:column}button{width:100%}}
+</style>
+</head>
+<body>
+<header><div class="head"><div><h1>DermKnowledge</h1><p>Synthetic Patient Context</p></div><div class="version">Alpha 1.0</div></div></header>
+<main><section class="card">
+<h2 id="pageTitle">Select or Create Synthetic Patient</h2>
+<div class="warning">Synthetic test patients only. Do not enter real names, dates of birth, medical record numbers, phone numbers, email addresses, or other identifying information.</div>
+<label>Select an existing synthetic patient<select id="existingPatient"><option value="">Create a new synthetic patient</option></select></label>
+<div class="grid">
+<label>Synthetic patient label<input id="patientLabel" type="text" placeholder="Example: Test Patient A"></label>
+<label>Synthetic patient ID<input id="patientId" type="text" placeholder="Generated automatically"></label>
+</div>
+<div class="grid">
+<label>Synthetic birth year<input id="birthYear" type="number" min="1900" max="2100" placeholder="Example: 1970"></label>
+<label>Sex assigned at birth<select id="sexAtBirth"><option value="">Select</option><option value="female">Female</option><option value="male">Male</option><option value="intersex">Intersex</option><option value="unknown">Unknown / not entered</option></select></label>
+</div>
+<div class="actions"><button onclick="continueWorkflow()">Continue</button><button class="secondary" onclick="location.href='../../index.html'">Return to Home</button></div>
+</section></main>
+<script>
+const params=new URLSearchParams(location.search),mode=params.get('mode')||'new';
+const patients=JSON.parse(localStorage.getItem('dermKnowledgePatients')||'[]');
+const sel=document.getElementById('existingPatient');
+patients.forEach(p=>{const o=document.createElement('option');o.value=p.patientId;o.textContent=p.patientLabel+' ('+p.patientId+')';sel.appendChild(o)});
+sel.onchange=()=>{const p=patients.find(x=>x.patientId===sel.value);['patientLabel','patientId','birthYear','sexAtBirth'].forEach(id=>document.getElementById(id).value=p?(p[id]||''):'')};
+document.getElementById('pageTitle').textContent=mode==='followup'?'Select Synthetic Patient for Follow-Up':'Create or Select Synthetic Patient';
+function continueWorkflow(){
+ const patientLabel=document.getElementById('patientLabel').value.trim();
+ let patientId=document.getElementById('patientId').value.trim();
+ const birthYear=document.getElementById('birthYear').value.trim();
+ const sexAtBirth=document.getElementById('sexAtBirth').value;
+ if(!patientLabel){alert('Please enter a synthetic patient label.');return}
+ if(!patientId)patientId='TEST-'+Date.now().toString(36).toUpperCase();
+ const patient={patientId,patientLabel,birthYear:birthYear||null,sexAtBirth:sexAtBirth||null,syntheticTestPatient:true,updatedAt:new Date().toISOString()};
+ const i=patients.findIndex(x=>x.patientId===patientId);
+ if(i>=0)patients[i]={...patients[i],...patient};else patients.push({...patient,createdAt:new Date().toISOString()});
+ localStorage.setItem('dermKnowledgePatients',JSON.stringify(patients));
+ localStorage.setItem('dermKnowledgeCurrentPatient',JSON.stringify(patient));
+ location.href=mode==='followup'?'../followup/followup.html':'../disclosure/disclosure.html';
+}
+</script>
+</body></html>

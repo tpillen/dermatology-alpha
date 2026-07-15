@@ -1,13 +1,24 @@
-DermKnowledge Alpha 0.9 — Complete Project Replacement
+DermKnowledge Alpha 1.0 — Complete Project Replacement
 
-1. Download and unzip the package.
+1. Download and unzip DermKnowledge_Alpha_1_0_Complete_Project.zip.
 2. Copy the complete contents into:
    C:\Users\tpill\OneDrive\Documents\GitHub\dermatology-alpha
-3. Choose “Replace the files in the destination.”
-4. Confirm modules\followup\followup.html exists.
+3. Choose Replace the files in the destination.
+4. Confirm new folders:
+   modules\patient
+   modules\records
 5. Open GitHub Desktop.
-6. Commit: Add Alpha 0.9 established patient follow-up workflow
+6. Commit:
+   Add Alpha 1.0 longitudinal synthetic patient record
 7. Push origin.
-8. Test both New Patient and Established Patient pathways.
 
-Use synthetic test data only.
+TEST
+- Create Test Patient A through New Patient.
+- Complete intake, provider review, attestation, and Save Test Record Locally.
+- Start Follow-Up Visit and select Test Patient A.
+- Complete follow-up and save provider-reviewed encounter.
+- Open Synthetic Patient Records.
+- Confirm both encounters appear.
+- Export selected patient JSON.
+
+Use synthetic test data only. Browser localStorage is not HIPAA-compliant or durable.

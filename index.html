@@ -8,7 +8,7 @@
     content="width=device-width, initial-scale=1"
   >
 
-  <title>DermKnowledge Alpha 0.9</title>
+  <title>DermKnowledge Alpha 1.0</title>
 
   <style>
     :root {
@@ -60,7 +60,7 @@
 
     header p {
       margin: 6px 0 0;
-      opacity: 0.95;
+      opacity: 1.05;
     }
 
     .version {
@@ -196,7 +196,7 @@
         <p>Dermatology Intake and Clinical Workflow Prototype</p>
       </div>
 
-      <div class="version">Alpha 0.9</div>
+      <div class="version">Alpha 1.0</div>
     </div>
   </header>
 
@@ -224,7 +224,7 @@
 
           <button
             type="button"
-              onclick="window.location.href='modules/disclosure/disclosure.html'"
+              onclick="window.location.href='modules/patient/patient.html?mode=new'"
           >
             Start New Patient
           </button>
@@ -240,16 +240,24 @@
 
           <button
             type="button"
-            onclick="window.location.href='modules/followup/followup.html'"
+            onclick="window.location.href='modules/patient/patient.html?mode=followup'"
           >
             Start Follow-Up Visit
+          </button>
+        </div>
+
+        <div class="visit-card">
+          <h3>Synthetic Patient Records</h3>
+          <p>Review locally stored test patients and their longitudinal encounter history.</p>
+          <button type="button" onclick="window.location.href='modules/records/records.html'">
+            Open Patient Records
           </button>
         </div>
 
       </div>
 
       <div class="status" id="statusMessage">
-        Alpha 0.9 patient workflow
+        Alpha 1.0 patient workflow
       </div>
 
       <div class="notice">
@@ -261,7 +269,7 @@
   </main>
 
   <footer>
-    DermKnowledge · Dermatology Intake Alpha 0.9
+    DermKnowledge · Dermatology Intake Alpha 1.0
   </footer>
 
   <script>

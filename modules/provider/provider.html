@@ -6,7 +6,7 @@
     name="viewport"
     content="width=device-width, initial-scale=1"
   >
-  <title>DermKnowledge Alpha 0.9 — Provider Workspace</title>
+  <title>DermKnowledge Alpha 1.0 — Provider Workspace</title>
 
   <style>
     :root {
@@ -63,7 +63,7 @@
 
     header p {
       margin: 5px 0 0;
-      opacity: 0.98;
+      opacity: 1.08;
     }
 
     .version {
@@ -272,7 +272,7 @@
       <h1>DermKnowledge</h1>
       <p>Provider Review and Documentation Workspace</p>
     </div>
-    <div class="version">Alpha 0.9</div>
+    <div class="version">Alpha 1.0</div>
   </div>
 </header>
 
@@ -285,6 +285,11 @@
       treating clinician. No automated diagnosis, coding, or treatment
       recommendation is provided in this version.
     </div>
+  </section>
+
+  <section class="card">
+    <h3>Synthetic Patient Context</h3>
+    <div id="patientContextSummary"></div>
   </section>
 
   <section class="card">
@@ -424,12 +429,23 @@
       return;
     }
 
+    renderPatientContext();
     renderIntakeSummary();
 
     document.getElementById(
       "encounterDate"
     ).value =
       new Date().toISOString().slice(0, 10);
+  }
+
+  function renderPatientContext() {
+    const patient = encounterRecord.patientContext || {};
+    document.getElementById("patientContextSummary").innerHTML = `
+      <div class="summary-row"><span class="summary-label">Synthetic patient:</span> ${escapeHtml(patient.patientLabel || "Not entered")}</div>
+      <div class="summary-row"><span class="summary-label">Synthetic patient ID:</span> ${escapeHtml(patient.patientId || "Not entered")}</div>
+      <div class="summary-row"><span class="summary-label">Birth year:</span> ${escapeHtml(patient.birthYear || "Not entered")}</div>
+      <div class="summary-row"><span class="summary-label">Sex assigned at birth:</span> ${escapeHtml(patient.sexAtBirth || "Not entered")}</div>
+    `;
   }
 
   function renderIntakeSummary() {
@@ -514,7 +530,7 @@
           }).join("\n\n");
 
     const note = [
-      "DERMKNOWLEDGE ALPHA 0.9 — SYNTHETIC TEST NOTE",
+      "DERMKNOWLEDGE ALPHA 1.0 — SYNTHETIC TEST NOTE",
       "",
       "Encounter date: " + (encounterDate || "Not entered"),
       "Provider: " + (providerName || "Not entered"),
@@ -608,6 +624,33 @@
       }
     };
 
+    const encounters =
+      JSON.parse(
+        localStorage.getItem(
+          "dermKnowledgeEncounters"
+        ) || "[]"
+      );
+
+    providerRecord.encounterId =
+      providerRecord.encounterId ||
+      ("ENC-" + Date.now().toString(36).toUpperCase());
+
+    const existingIndex =
+      encounters.findIndex(function(encounter) {
+        return encounter.encounterId === providerRecord.encounterId;
+      });
+
+    if (existingIndex >= 0) {
+      encounters[existingIndex] = providerRecord;
+    } else {
+      encounters.push(providerRecord);
+    }
+
+    localStorage.setItem(
+      "dermKnowledgeEncounters",
+      JSON.stringify(encounters)
+    );
+
     localStorage.setItem(
       "dermKnowledgeProviderReviewedEncounter",
       JSON.stringify(providerRecord)
@@ -620,7 +663,7 @@
 
     status.style.display = "block";
     status.textContent =
-      "Synthetic provider-reviewed record saved locally at " +
+      "Synthetic encounter added to the longitudinal patient record at " +
       new Date().toLocaleString() +
       ".";
   }

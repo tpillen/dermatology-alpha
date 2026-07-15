@@ -2,7 +2,7 @@
 window.DERM_KNOWLEDGE_BASE = {
   "engine": {
     "name": "DermKnowledge Clinical Knowledge Engine",
-    "engineVersion": "0.9",
+    "engineVersion": "1.0",
     "knowledgeVersion": "1.0",
     "status": "Alpha prototype",
     "clinicalAuthority": "Clinician-authored prototype requiring formal clinical validation",
@@ -1208,7 +1208,7 @@ window.DERM_KNOWLEDGE_BASE = {
     }
   },
   "provenance": {
-    "createdFor": "DermKnowledge Alpha 0.9",
+    "createdFor": "DermKnowledge Alpha 1.0",
     "reviewStatus": "Prototype clinical review pending",
     "changeControl": "Future changes should update knowledgeVersion and CHANGELOG.md",
     "sourceFrameworks": [

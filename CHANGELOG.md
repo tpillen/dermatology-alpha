@@ -1,22 +1,17 @@
-# DermKnowledge Alpha 0.9 — Established Patient Follow-Up Workflow
+# DermKnowledge Alpha 1.0 — Longitudinal Synthetic Patient Record
 
 ## Added
-- Functional Established Patient pathway.
-- Progressive one-, two-, or three-concern follow-up workflow.
-- Existing problem versus new complaint.
-- Prior diagnosis or working diagnosis.
-- Status since last visit.
-- Current treatment, adherence, benefit, and adverse effects.
-- New symptoms or changes.
-- Patient visit goal.
-- Structured follow-up JSON with `encounterType: established-patient`.
-- Provider Workspace support for new and established encounters.
+- Synthetic patient creation and selection.
+- Stable synthetic patient ID.
+- Patient context linked to new and follow-up encounters.
+- Provider-attested encounters appended to a longitudinal local record.
+- Synthetic patient record browser.
+- Chronological encounter timeline.
+- Export of a selected synthetic patient and all encounters as JSON.
 
-## Preserved
-- New Patient workflow.
-- Disclosure.
-- Clinical Knowledge Engine.
-- Provider Workspace.
-- Voice entry and JSON export.
+## New modules
+- `modules/patient/patient.html`
+- `modules/records/records.html`
 
-Prototype only. Use synthetic data.
+## Safety
+Synthetic testing only. Local browser storage is not secure, durable, multi-user, or HIPAA-compliant.
